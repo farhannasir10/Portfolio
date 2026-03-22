@@ -1,0 +1,97 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum MediaType {
+  VIDEO_UPLOAD
+  IMAGE
+  EXTERNAL_LINK
+}
+
+model SiteSettings {
+  id            String   @id @default("default")
+  profileImage  String?
+  heroTitle     String   @default("Freelance software engineer")
+  heroSubtitle  String   @default("I design and ship web products end to end.")
+  aboutMarkdown String   @default("Edit this in **Admin → Site**.")
+  email         String?
+  linkedinUrl   String?
+  githubUrl     String?
+  updatedAt     DateTime @updatedAt
+}
+
+model Project {
+  id        String         @id @default(cuid())
+  title     String
+  slug      String         @unique
+  summary   String?
+  content   String?
+  stack     String?
+  sortOrder Int            @default(0)
+  published Boolean        @default(true)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  media     ProjectMedia[]
+}
+
+model ProjectMedia {
+  id        String    @id @default(cuid())
+  projectId String
+  project   Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  type      MediaType
+  url       String
+  caption   String?
+  sortOrder Int       @default(0)
+}
+
+model BlogPost {
+  id          String    @id @default(cuid())
+  title       String
+  slug        String    @unique
+  excerpt     String?
+  content     String
+  coverImage  String?
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model CvAsset {
+  id           String   @id @default(cuid())
+  storageKey   String
+  originalName String
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+}
+
+/** Home page service cards. @@map keeps SQLite table name `Service` (existing DBs). */
+model PortfolioService {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  iconKey     String   @default("code")
+  sortOrder   Int      @default(0)
+  published   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("Service")
+}
+
+/** Home page skill tags (e.g. TypeScript, Next.js). */
+model PortfolioSkill {
+  id        String   @id @default(cuid())
+  name      String
+  sortOrder Int      @default(0)
+  published Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("Skill")
+}

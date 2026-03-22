@@ -1,0 +1,58 @@
+import { MarkdownBody } from "@/components/MarkdownBody";
+import { getPublishedPostBySlug } from "@/lib/data";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+
+type Props = { params: Promise<{ slug: string }> };
+
+export async function generateMetadata({ params }: Props) {
+  const { slug } = await params;
+  const post = await getPublishedPostBySlug(slug);
+  if (!post) return { title: "Blog" };
+  return { title: `${post.title} · Blog` };
+}
+
+export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params;
+  const post = await getPublishedPostBySlug(slug);
+  if (!post) notFound();
+
+  const cover =
+    post.coverImage?.startsWith("http") === true
+      ? post.coverImage
+      : post.coverImage
+        ? `/api/files/${encodeURIComponent(post.coverImage)}`
+        : null;
+
+  return (
+    <article className="mx-auto max-w-3xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+      <Link
+        href="/blog"
+        className="kicker-sky inline-block opacity-90 transition hover:text-sky-200"
+      >
+        ← Blog
+      </Link>
+      <h1 className="mt-8 text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl sm:leading-tight">
+        {post.title}
+      </h1>
+      {post.publishedAt ? (
+        <p className="mt-3 text-sm text-slate-600">
+          {post.publishedAt.toLocaleDateString(undefined, {
+            dateStyle: "long",
+          })}
+        </p>
+      ) : null}
+      {cover ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={cover}
+          alt=""
+          className="mt-10 w-full rounded-xl border border-sky-500/15 object-cover shadow-lg shadow-black/40"
+        />
+      ) : null}
+      <div className="mt-12">
+        <MarkdownBody content={post.content} />
+      </div>
+    </article>
+  );
+}
