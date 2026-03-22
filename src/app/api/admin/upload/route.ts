@@ -11,6 +11,7 @@ import {
   missingSupabaseStorageEnvKeys,
   uploadFileToSupabasePublic,
 } from "@/lib/supabase-storage";
+import { isVercelBlobConfigured } from "@/lib/upload-env";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 300;
@@ -43,18 +44,43 @@ export async function POST(req: Request) {
 
   const storageKey = makeStorageKey(file.name);
 
-  if (isVercel() && !isSupabaseStorageConfigured()) {
-    const missingEnv = missingSupabaseStorageEnvKeys();
+  if (
+    isVercel() &&
+    !isVercelBlobConfigured() &&
+    !isSupabaseStorageConfigured()
+  ) {
     return NextResponse.json(
       {
         error:
-          "Vercel cannot save uploads to disk. Add the missing variables below in Vercel → Settings → Environment Variables (all environments you use), then redeploy. For files over ~4.5 MB also set NEXT_PUBLIC_SUPABASE_ANON_KEY so uploads go straight to Supabase.",
-        missingEnv,
+          "No file storage on Vercel. Add a Blob store (project → Storage → Blob) so BLOB_READ_WRITE_TOKEN is set, or configure Supabase Storage (service role + project URL).",
+        missingEnv: [
+          "BLOB_READ_WRITE_TOKEN",
+          ...missingSupabaseStorageEnvKeys(),
+        ],
         hint:
-          "Names must match exactly. You can use NEXT_PUBLIC_SUPABASE_PROJECT_REF=your_ref (no https) instead of a full URL.",
+          "Large files: the admin UI uploads via Blob in the browser first (no Supabase needed). Server FormData uploads are limited by the host request body size (~4.5 MB on many plans).",
       },
       { status: 503 },
     );
+  }
+
+  if (isVercelBlobConfigured()) {
+    try {
+      const { put } = await import("@vercel/blob");
+      const result = await put(storageKey, file, {
+        access: "public",
+        addRandomSuffix: true,
+        contentType: file.type || undefined,
+        multipart: file.size > 4 * 1024 * 1024,
+      });
+      return NextResponse.json({
+        storageKey: result.url,
+        url: result.url,
+      });
+    } catch (e) {
+      console.error("[upload] vercel blob put", e);
+      return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    }
   }
 
   if (isSupabaseStorageConfigured()) {

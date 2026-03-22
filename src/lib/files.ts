@@ -7,9 +7,7 @@ import { pipeline } from "stream/promises";
 import { Readable, Transform } from "stream";
 
 export const UPLOAD_DIR = path.join(process.cwd(), "uploads");
-export const MAX_VIDEO_BYTES = 512 * 1024 * 1024;
-export const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
-export const MAX_CV_BYTES = 15 * 1024 * 1024;
+export { MAX_CV_BYTES, MAX_IMAGE_BYTES, MAX_VIDEO_BYTES } from "@/lib/upload-limits";
 
 const SAFE_NAME = /^[a-zA-Z0-9._-]+$/;
 

@@ -32,9 +32,12 @@ export function SiteTopBar({
             <Link href="/" className="transition hover:text-sky-300">
               Home
             </Link>
-            <a href="/#projects" className="transition hover:text-sky-300">
+            <Link
+              href="/#projects"
+              className="transition hover:text-sky-300"
+            >
               Work
-            </a>
+            </Link>
           </nav>
           <div className="flex items-center gap-2 border-l border-sky-500/15 pl-4 sm:pl-6">
             {linkedinUrl ? (
@@ -103,13 +106,13 @@ function MobileSectionStrip({
   return (
     <div className="flex gap-2 overflow-x-auto border-t border-sky-500/5 px-4 py-2.5 lg:hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       {links.map((l) => (
-        <a
+        <Link
           key={l.href}
           href={l.href}
           className="shrink-0 rounded-full border border-sky-500/15 bg-sky-500/5 px-3 py-1 text-xs font-medium text-slate-400"
         >
           {l.label}
-        </a>
+        </Link>
       ))}
     </div>
   );

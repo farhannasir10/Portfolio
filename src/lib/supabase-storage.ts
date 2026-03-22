@@ -4,8 +4,17 @@ import path from "path";
 
 let adminClient: SupabaseClient | null = null;
 
+/** Used when `SUPABASE_STORAGE_BUCKET` is unset; create a public bucket with this name in Supabase. */
+export const DEFAULT_SUPABASE_STORAGE_BUCKET = "portfolio";
+
+export function getSupabaseStorageBucket(): string {
+  const b = process.env.SUPABASE_STORAGE_BUCKET?.trim();
+  return b || DEFAULT_SUPABASE_STORAGE_BUCKET;
+}
+
 /**
  * Names of required env vars that are empty. Use in API error responses (no values leaked).
+ * Bucket defaults to {@link DEFAULT_SUPABASE_STORAGE_BUCKET}; ensure that bucket exists and is public.
  */
 export function missingSupabaseStorageEnvKeys(): string[] {
   const missing: string[] = [];
@@ -16,9 +25,6 @@ export function missingSupabaseStorageEnvKeys(): string[] {
   }
   if (!process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()) {
     missing.push("SUPABASE_SERVICE_ROLE_KEY");
-  }
-  if (!process.env.SUPABASE_STORAGE_BUCKET?.trim()) {
-    missing.push("SUPABASE_STORAGE_BUCKET");
   }
   return missing;
 }
@@ -74,7 +80,7 @@ export async function uploadFileToSupabasePublic(
     throw new Error("FILE_TOO_LARGE");
   }
 
-  const bucket = process.env.SUPABASE_STORAGE_BUCKET!.trim();
+  const bucket = getSupabaseStorageBucket();
   const supabase = getSupabaseAdmin();
   const contentType = contentTypeForFilename(file.name, file.type);
 
@@ -105,7 +111,7 @@ export async function createSignedUploadForAdmin(objectPath: string): Promise<{
   bucket: string;
   publicUrl: string;
 }> {
-  const bucket = process.env.SUPABASE_STORAGE_BUCKET!.trim();
+  const bucket = getSupabaseStorageBucket();
   const supabase = getSupabaseAdmin();
   const { data, error } = await supabase.storage
     .from(bucket)
