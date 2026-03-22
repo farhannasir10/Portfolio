@@ -6,6 +6,10 @@ import {
   makeStorageKey,
   saveUploadFromFile,
 } from "@/lib/files";
+import {
+  isSupabaseStorageConfigured,
+  uploadFileToSupabasePublic,
+} from "@/lib/supabase-storage";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 300;
@@ -28,7 +32,32 @@ export async function POST(req: Request) {
   if (kind === "video") max = MAX_VIDEO_BYTES;
   if (kind === "cv") max = MAX_CV_BYTES;
 
+  if (file.size > max) {
+    return NextResponse.json({ error: "File too large" }, { status: 413 });
+  }
+
   const storageKey = makeStorageKey(file.name);
+
+  if (isSupabaseStorageConfigured()) {
+    try {
+      const { publicUrl } = await uploadFileToSupabasePublic(
+        file,
+        storageKey,
+        max,
+      );
+      return NextResponse.json({
+        storageKey: publicUrl,
+        url: publicUrl,
+      });
+    } catch (e) {
+      if (e instanceof Error && e.message === "FILE_TOO_LARGE") {
+        return NextResponse.json({ error: "File too large" }, { status: 413 });
+      }
+      console.error(e);
+      return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    }
+  }
+
   try {
     await saveUploadFromFile(file, storageKey, max);
   } catch (e) {

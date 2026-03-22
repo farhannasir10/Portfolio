@@ -22,8 +22,10 @@ A Next.js portfolio template with a built-in admin area. The public site is cont
 - **Blog** — Markdown posts, optional cover image, draft vs published. Unpublished-only state hides blog from the main nav.
 - **About & contact** — Profile image, hero text, about copy (Markdown), email and social URLs from site settings.
 - **CV** — Active PDF exposed for download (configured in admin).
-(`/admin/login`)
 
+### Admin
+
+- Sign in at `/admin/login`.
 - **Projects** — Title, slug, summary, Markdown body, stack, sort order, published; media uploads (video, image, external URL), reorder, remove. UI documents how sort order affects the home card vs the detail gallery.
 - **Services & skills** — Titles/descriptions/icons (services), skill names, ordering, publish flags.
 - **Blog** — Create, edit, publish posts.
@@ -39,12 +41,12 @@ A Next.js portfolio template with a built-in admin area. The public site is cont
 |--------|---------|
 | **Framework** | Next.js 16 (App Router, Server Actions, Turbopack in dev) |
 | **UI** | React 19, Tailwind CSS 4, `@tailwindcss/typography` |
-| **Database** | SQLite + Prisma (swap to PostgreSQL via `DATABASE_URL` + provider for production if needed) |
+| **Database** | PostgreSQL (Supabase) + Prisma |
 | **Auth** | Auth.js / NextAuth v5 (credentials) for admin |
 | **Markdown** | `react-markdown`, `remark-gfm` |
-| **Other** | TypeScript, Zod, bcryptjs |
+| **Other** | TypeScript, Zod, bcryptjs, `@supabase/supabase-js` |
 
-Uploads are handled via API routes and stored on the local filesystem — suitable for development and small deployments; production at scale often moves storage to S3/R2 or similar.
+**File uploads:** If `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SUPABASE_STORAGE_BUCKET` are set, admin uploads go to **Supabase Storage** (public bucket) and the app stores the public HTTPS URL in the database. If those variables are omitted, uploads fall back to the local `uploads/` folder and `/api/files/…` (fine for local dev only).
 
 ---
 
@@ -69,10 +71,19 @@ Copy `.env.example` to `.env` and set:
 
 | Variable | Purpose |
 |----------|---------|
-| `DATABASE_URL` | e.g. `file:./dev.db` for SQLite |
+| `DATABASE_URL` | PostgreSQL connection string (this project targets Supabase; include `?sslmode=require`) |
 | `AUTH_SECRET` | Random secret (e.g. `openssl rand -base64 32`) |
 | `AUTH_URL` | App origin, e.g. `http://localhost:3000` |
 | `ADMIN_PASSWORD` | Admin login password; optional `ADMIN_PASSWORD_HASH` for bcrypt hash in production |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL (Settings → API) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key (server-only; never commit or expose to the browser) |
+| `SUPABASE_STORAGE_BUCKET` | Storage bucket name (create under Storage; mark **Public** for portfolio assets) |
+
+### Supabase Storage (production)
+
+1. In the Supabase dashboard: **Storage → New bucket** — use the same name as `SUPABASE_STORAGE_BUCKET` (e.g. `portfolio`).  
+2. Turn on **Public bucket** so images, videos, and CV PDFs load via public URLs.  
+3. Uploads use the **service role** key on the server only (`POST /api/admin/upload`).
 
 ### Database & dev server
 
@@ -100,8 +111,7 @@ npm run dev
 ## Deployment notes
 
 - `npm run build` already runs Prisma client generation.  
-- SQLite is a single file — many serverless hosts use ephemeral disks; **PostgreSQL** is a common upgrade for hosted deployments.  
-- Mirror all required env vars on the hosting provider, including `AUTH_SECRET` and the public `AUTH_URL`.
+- Mirror all required env vars on the hosting provider, including `DATABASE_URL`, `AUTH_SECRET`, and the public `AUTH_URL`.
 
 ---
 
@@ -119,10 +129,32 @@ prisma/schema.prisma
 
 ## Troubleshooting
 
-After upgrading Prisma or Next.js, stop the dev server, run `npx prisma generate`, then start again. On Windows, if the Prisma query engine file is locked (`EPERM`), close the terminal and retry.
+### `the URL must start with the protocol file:` (or SQLite vs Postgres mismatch)
+
+The **generated** Prisma client under `node_modules/.prisma` is out of date: it still thinks the database is SQLite while `DATABASE_URL` is PostgreSQL.
+
+1. **Stop** `next dev` (and any other Node process using this folder).
+2. Run **`npx prisma generate`** (or **`npm run db:regenerate`**).
+3. Delete **`.next`** and start dev again (`npm run dev` — a **`predev`** step runs `prisma generate` first).
+
+On Windows, if `prisma generate` fails with **`EPERM`** on `query_engine-windows.dll.node`, the engine file is locked — fully stop the dev server and terminal, then run `npx prisma generate` again (or close Cursor/VS Code and retry).
+
+### `The table public.Skill (or Service) does not exist`
+
+The Postgres database is empty or outdated vs `schema.prisma`. With `DATABASE_URL` set, run:
+
+```bash
+npx prisma db push
+```
+
+That creates/updates tables (including `Skill` and `Service` from `@@map`). Use `npx prisma migrate dev` instead if you rely on migration history.
+
+### General
+
+After upgrading Prisma or Next.js, stop the dev server, run `npx prisma generate`, then start again.
 
 ---
 
 ## License
 
-Specify your license here (e.g. MIT) or mark the repository as private — this section is left for the repo owner to finalize.
+[MIT](LICENSE).

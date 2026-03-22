@@ -15,6 +15,7 @@ import {
   getPublishedSkills,
   hasPublishedPosts,
 } from "@/lib/data";
+import { publicFileUrl } from "@/lib/public-file-url";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -29,6 +30,8 @@ export default async function HomePage() {
     getPublishedServices(),
     getPublishedSkills(),
   ]);
+
+  const cvDownloadHref = cv ? publicFileUrl(cv.storageKey) : null;
 
   return (
     <div className="mx-auto max-w-5xl px-4 pb-24 sm:px-6 lg:px-8">
@@ -147,10 +150,10 @@ export default async function HomePage() {
         <div className="max-w-3xl">
           <MarkdownBody content={settings.aboutMarkdown} />
         </div>
-        {cv ? (
+        {cv && cvDownloadHref ? (
           <p className="mt-10">
             <a
-              href={`/api/files/${encodeURIComponent(cv.storageKey)}`}
+              href={cvDownloadHref}
               download={cv.originalName}
               className="btn-secondary inline-flex"
             >

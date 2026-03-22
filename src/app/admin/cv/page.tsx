@@ -3,6 +3,7 @@ import { AdminFileField } from "@/components/AdminFileField";
 import { AdminFormSubmitButton } from "@/components/admin/AdminFormSubmitButton";
 import { AdminNotice } from "@/components/admin/AdminNotice";
 import { prisma } from "@/lib/prisma";
+import { publicFileUrl } from "@/lib/public-file-url";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,7 @@ export default async function AdminCvPage({ searchParams }: Props) {
     orderBy: { createdAt: "desc" },
   });
   const active = assets.find((a) => a.isActive);
+  const activeCvHref = active ? publicFileUrl(active.storageKey) : null;
 
   return (
     <div>
@@ -31,14 +33,18 @@ export default async function AdminCvPage({ searchParams }: Props) {
         <div className="mt-6 rounded-lg border border-zinc-800 bg-zinc-900/40 p-4 text-sm">
           <p className="text-zinc-300">
             Active file:{" "}
-            <a
-              href={`/api/files/${encodeURIComponent(active.storageKey)}`}
-              className="text-cyan-400 underline"
-              target="_blank"
-              rel="noreferrer"
-            >
-              {active.originalName}
-            </a>
+            {activeCvHref ? (
+              <a
+                href={activeCvHref}
+                className="text-cyan-400 underline"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {active.originalName}
+              </a>
+            ) : (
+              <span className="text-zinc-500">{active.originalName}</span>
+            )}
           </p>
         </div>
       ) : (

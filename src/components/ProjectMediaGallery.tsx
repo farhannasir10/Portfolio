@@ -1,8 +1,5 @@
+import { fileSrcFromKey } from "@/lib/project-media";
 import { MediaType } from "@prisma/client";
-
-function fileSrc(key: string) {
-  return `/api/files/${encodeURIComponent(key)}`;
-}
 
 function loomEmbedUrl(url: string): string | null {
   const share = url.match(/loom\.com\/share\/([a-zA-Z0-9]+)/);
@@ -82,7 +79,7 @@ function MediaItem(m: {
         controls
         playsInline
         preload="metadata"
-        src={fileSrc(m.url)}
+        src={fileSrcFromKey(m.url)}
       />
     );
   }
@@ -90,7 +87,7 @@ function MediaItem(m: {
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={fileSrc(m.url)}
+      src={fileSrcFromKey(m.url)}
       alt={m.caption ?? "Project screenshot"}
       className="max-h-[80vh] w-full object-contain"
     />

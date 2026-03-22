@@ -1,6 +1,7 @@
 import { AdminFileField } from "@/components/AdminFileField";
 import { AdminNotice } from "@/components/admin/AdminNotice";
 import { getOrCreateSiteSettings } from "@/lib/data";
+import { publicFileUrl } from "@/lib/public-file-url";
 
 export const dynamic = "force-dynamic";
 
@@ -8,9 +9,7 @@ type Props = { searchParams?: Promise<{ saved?: string; error?: string }> };
 
 export default async function AdminSitePage({ searchParams }: Props) {
   const s = await getOrCreateSiteSettings();
-  const profileSrc = s.profileImage
-    ? `/api/files/${encodeURIComponent(s.profileImage)}`
-    : null;
+  const profileSrc = publicFileUrl(s.profileImage);
 
   const q = searchParams ? await searchParams : {};
 

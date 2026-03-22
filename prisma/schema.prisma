@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -70,7 +70,7 @@ model CvAsset {
   createdAt    DateTime @default(now())
 }
 
-/** Home page service cards. @@map keeps SQLite table name `Service` (existing DBs). */
+/** Home page service cards. @@map keeps table name `Service`. */
 model PortfolioService {
   id          String   @id @default(cuid())
   title       String
