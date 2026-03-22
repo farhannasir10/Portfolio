@@ -8,6 +8,7 @@ import {
 } from "@/lib/files";
 import {
   isSupabaseStorageConfigured,
+  missingSupabaseStorageEnvKeys,
   uploadFileToSupabasePublic,
 } from "@/lib/supabase-storage";
 import { NextResponse } from "next/server";
@@ -43,10 +44,14 @@ export async function POST(req: Request) {
   const storageKey = makeStorageKey(file.name);
 
   if (isVercel() && !isSupabaseStorageConfigured()) {
+    const missingEnv = missingSupabaseStorageEnvKeys();
     return NextResponse.json(
       {
         error:
-          "Vercel cannot store uploads on disk. Set NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_STORAGE_BUCKET, and use direct uploads (NEXT_PUBLIC_SUPABASE_ANON_KEY). See README.",
+          "Vercel cannot save uploads to disk. Add the missing variables below in Vercel → Settings → Environment Variables (all environments you use), then redeploy. For files over ~4.5 MB also set NEXT_PUBLIC_SUPABASE_ANON_KEY so uploads go straight to Supabase.",
+        missingEnv,
+        hint:
+          "Names must match exactly. You can use NEXT_PUBLIC_SUPABASE_PROJECT_REF=your_ref (no https) instead of a full URL.",
       },
       { status: 503 },
     );

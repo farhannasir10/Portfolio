@@ -1,14 +1,15 @@
 "use client";
 
 import { createClient } from "@supabase/supabase-js";
+import { supabaseUrlForBrowser } from "@/lib/supabase-url";
 import { useState } from "react";
 
 type Kind = "video" | "image" | "cv";
 
 function clientHasSupabaseDirectUpload(): boolean {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const url = supabaseUrlForBrowser();
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  return Boolean(url?.trim() && anon?.trim());
+  return Boolean(url && anon?.trim());
 }
 
 export function AdminFileField({
@@ -63,31 +64,35 @@ export function AdminFileField({
               } else {
                 const j = (await signRes.json()) as {
                   error?: string;
+                  missingEnv?: string[];
                   path?: string;
                   token?: string;
                   bucket?: string;
                   publicUrl?: string;
                 };
                 if (!signRes.ok) {
-                  setErr(j.error ?? "Could not start upload");
+                  const miss =
+                    Array.isArray(j.missingEnv) && j.missingEnv.length > 0
+                      ? ` Add: ${j.missingEnv.join(", ")}.`
+                      : "";
+                  setErr((j.error ?? "Could not start upload") + miss);
                   return;
                 }
+                const browserUrl = supabaseUrlForBrowser();
+                const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY?.trim();
                 if (
                   !j.path ||
                   !j.token ||
                   !j.bucket ||
                   !j.publicUrl ||
-                  !process.env.NEXT_PUBLIC_SUPABASE_URL ||
-                  !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+                  !browserUrl ||
+                  !anon
                 ) {
                   setErr("Invalid upload response");
                   return;
                 }
 
-                const supabase = createClient(
-                  process.env.NEXT_PUBLIC_SUPABASE_URL,
-                  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-                );
+                const supabase = createClient(browserUrl, anon);
 
                 const { error: upErr } = await supabase.storage
                   .from(j.bucket)
@@ -117,9 +122,14 @@ export function AdminFileField({
             const j = (await res.json()) as {
               error?: string;
               storageKey?: string;
+              missingEnv?: string[];
             };
             if (!res.ok) {
-              setErr(j.error ?? "Upload failed");
+              const miss =
+                Array.isArray(j.missingEnv) && j.missingEnv.length > 0
+                  ? ` Add in Vercel: ${j.missingEnv.join(", ")}.`
+                  : "";
+              setErr((j.error ?? "Upload failed") + miss);
               return;
             }
             if (j.storageKey) {

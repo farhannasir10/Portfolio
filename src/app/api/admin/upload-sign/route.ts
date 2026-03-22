@@ -8,6 +8,7 @@ import {
 import {
   createSignedUploadForAdmin,
   isSupabaseStorageConfigured,
+  missingSupabaseStorageEnvKeys,
 } from "@/lib/supabase-storage";
 import { NextResponse } from "next/server";
 
@@ -30,7 +31,10 @@ export async function POST(req: Request) {
 
   if (!isSupabaseStorageConfigured()) {
     return NextResponse.json(
-      { error: "Supabase Storage is not configured on the server." },
+      {
+        error: "Supabase Storage is not configured on the server.",
+        missingEnv: missingSupabaseStorageEnvKeys(),
+      },
       { status: 503 },
     );
   }

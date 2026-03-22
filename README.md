@@ -46,7 +46,7 @@ A Next.js portfolio template with a built-in admin area. The public site is cont
 | **Markdown** | `react-markdown`, `remark-gfm` |
 | **Other** | TypeScript, Zod, bcryptjs, `@supabase/supabase-js` |
 
-**File uploads:** If `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `SUPABASE_STORAGE_BUCKET` are set, admin uploads go to **Supabase Storage** (public bucket) and the app stores the public HTTPS URL in the database. If those variables are omitted, uploads fall back to the local `uploads/` folder and `/api/files/…` (fine for local dev only).
+**File uploads:** If a Supabase API URL is set (full URL or `NEXT_PUBLIC_SUPABASE_PROJECT_REF`), plus `SUPABASE_SERVICE_ROLE_KEY` and `SUPABASE_STORAGE_BUCKET`, admin uploads go to **Supabase Storage**. If those variables are omitted, uploads fall back to the local `uploads/` folder (local dev only).
 
 ---
 
@@ -75,7 +75,8 @@ Copy `.env.example` to `.env` and set:
 | `AUTH_SECRET` | Random secret (e.g. `openssl rand -base64 32`) |
 | `AUTH_URL` | App origin, e.g. `http://localhost:3000` |
 | `ADMIN_PASSWORD` | Admin login password; optional `ADMIN_PASSWORD_HASH` for bcrypt hash in production |
-| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL (Settings → API) |
+| `NEXT_PUBLIC_SUPABASE_URL` *or* `NEXT_PUBLIC_SUPABASE_PROJECT_REF` | Set **one**: full `https://xxxxx.supabase.co` **or** ref-only `xxxxx` (from dashboard URL `/project/xxxxx`). Ref-only helps when an env UI rejects URL-like values. |
+| `SUPABASE_URL` *or* `SUPABASE_PROJECT_REF` | Optional server-only copy for API routes. |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **anon public** key — needed so the admin UI can upload files straight to Storage (required on Vercel) |
 | `SUPABASE_SERVICE_ROLE_KEY` | Service role key (server-only) — mints signed upload URLs |
 | `SUPABASE_STORAGE_BUCKET` | Storage bucket name (create under Storage; mark **Public** for portfolio assets) |
@@ -122,7 +123,7 @@ This project uses **direct uploads to Supabase Storage** when these are set in t
 
 | Variable | Notes |
 |----------|--------|
-| `NEXT_PUBLIC_SUPABASE_URL` | Same as local |
+| `NEXT_PUBLIC_SUPABASE_URL` *or* `NEXT_PUBLIC_SUPABASE_PROJECT_REF` | Same project as local: full URL **or** ref-only `xxxxx` if Vercel won’t accept a URL in the value field |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **Required for uploads** — Supabase → Settings → API → `anon` `public` key (safe to expose; it only works with your signed URLs + RLS) |
 | `SUPABASE_SERVICE_ROLE_KEY` | **Secret** — server only; used to mint signed upload URLs |
 | `SUPABASE_STORAGE_BUCKET` | Bucket name; must be **public** for portfolio assets |

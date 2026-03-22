@@ -1,18 +1,34 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { supabaseProjectUrlForServer } from "@/lib/supabase-url";
 import path from "path";
 
 let adminClient: SupabaseClient | null = null;
 
+/**
+ * Names of required env vars that are empty. Use in API error responses (no values leaked).
+ */
+export function missingSupabaseStorageEnvKeys(): string[] {
+  const missing: string[] = [];
+  if (!supabaseProjectUrlForServer()) {
+    missing.push(
+      "NEXT_PUBLIC_SUPABASE_URL, SUPABASE_URL, NEXT_PUBLIC_SUPABASE_PROJECT_REF, or SUPABASE_PROJECT_REF",
+    );
+  }
+  if (!process.env.SUPABASE_SERVICE_ROLE_KEY?.trim()) {
+    missing.push("SUPABASE_SERVICE_ROLE_KEY");
+  }
+  if (!process.env.SUPABASE_STORAGE_BUCKET?.trim()) {
+    missing.push("SUPABASE_STORAGE_BUCKET");
+  }
+  return missing;
+}
+
 export function isSupabaseStorageConfigured(): boolean {
-  return Boolean(
-    process.env.NEXT_PUBLIC_SUPABASE_URL?.trim() &&
-      process.env.SUPABASE_SERVICE_ROLE_KEY?.trim() &&
-      process.env.SUPABASE_STORAGE_BUCKET?.trim(),
-  );
+  return missingSupabaseStorageEnvKeys().length === 0;
 }
 
 function getSupabaseAdmin(): SupabaseClient {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL?.trim();
+  const url = supabaseProjectUrlForServer();
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY?.trim();
   if (!url || !key) {
     throw new Error("Supabase storage env vars are not set");
