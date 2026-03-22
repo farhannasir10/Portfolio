@@ -76,14 +76,15 @@ Copy `.env.example` to `.env` and set:
 | `AUTH_URL` | App origin, e.g. `http://localhost:3000` |
 | `ADMIN_PASSWORD` | Admin login password; optional `ADMIN_PASSWORD_HASH` for bcrypt hash in production |
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL (Settings → API) |
-| `SUPABASE_SERVICE_ROLE_KEY` | Service role key (server-only; never commit or expose to the browser) |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **anon public** key — needed so the admin UI can upload files straight to Storage (required on Vercel) |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key (server-only) — mints signed upload URLs |
 | `SUPABASE_STORAGE_BUCKET` | Storage bucket name (create under Storage; mark **Public** for portfolio assets) |
 
 ### Supabase Storage (production)
 
 1. In the Supabase dashboard: **Storage → New bucket** — use the same name as `SUPABASE_STORAGE_BUCKET` (e.g. `portfolio`).  
 2. Turn on **Public bucket** so images, videos, and CV PDFs load via public URLs.  
-3. Uploads use the **service role** key on the server only (`POST /api/admin/upload`).
+3. Admin uploads: the server uses the **service role** to create a **signed upload URL**; the browser sends the file **directly to Supabase** (see **Vercel + admin uploads** above).
 
 ### Database & dev server
 
@@ -111,7 +112,24 @@ npm run dev
 ## Deployment notes
 
 - `npm run build` already runs Prisma client generation.  
-- Mirror all required env vars on the hosting provider, including `DATABASE_URL`, `AUTH_SECRET`, and the public `AUTH_URL`.
+- Mirror all required env vars on the hosting provider, including `DATABASE_URL`, `AUTH_SECRET`, and the public `AUTH_URL` (must be your real production URL, e.g. `https://your-domain.vercel.app`).
+
+### Vercel + admin uploads
+
+Vercel serverless functions have a **small request body limit** (often ~4.5 MB on Hobby) and **no persistent disk**, so sending whole videos/images through `POST /api/admin/upload` fails or is unreliable.
+
+This project uses **direct uploads to Supabase Storage** when these are set in the Vercel project **Environment Variables** (Production + Preview as needed):
+
+| Variable | Notes |
+|----------|--------|
+| `NEXT_PUBLIC_SUPABASE_URL` | Same as local |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | **Required for uploads** — Supabase → Settings → API → `anon` `public` key (safe to expose; it only works with your signed URLs + RLS) |
+| `SUPABASE_SERVICE_ROLE_KEY` | **Secret** — server only; used to mint signed upload URLs |
+| `SUPABASE_STORAGE_BUCKET` | Bucket name; must be **public** for portfolio assets |
+
+Redeploy after adding `NEXT_PUBLIC_*` vars so the client bundle picks them up.
+
+If Storage isn’t configured on Vercel, the API returns a clear error instead of writing to disk.
 
 ---
 
@@ -138,6 +156,17 @@ The **generated** Prisma client under `node_modules/.prisma` is out of date: it 
 3. Delete **`.next`** and start dev again (`npm run dev` — a **`predev`** step runs `prisma generate` first).
 
 On Windows, if `prisma generate` fails with **`EPERM`** on `query_engine-windows.dll.node`, the engine file is locked — fully stop the dev server and terminal, then run `npx prisma generate` again (or close Cursor/VS Code and retry).
+
+### `Can't reach database server` (Supabase pooler / Prisma)
+
+Prisma cannot open a TCP connection to Postgres. Common cases:
+
+1. **Wrong URL for where you run the app** — On your laptop, use **Direct connection** (host `db.<project-ref>.supabase.co`, port **5432**) from **Supabase → Settings → Database**. The **pooler** host (`aws-*.pooler.supabase.com`) often fails from home/office networks or needs port **6543** + `pgbouncer` options; it’s aimed at **serverless** hosts.
+2. **Project paused** — Free Supabase projects pause after inactivity; open the dashboard and resume.
+3. **IPv4** — Some networks only route IPv4; if Supabase shows an **IPv4** or **Pooler** compatibility note, follow it.
+4. **Password** — Special characters in the password must be **URL-encoded** in `DATABASE_URL`.
+
+After changing `DATABASE_URL`, restart `next dev`.
 
 ### `The table public.Skill (or Service) does not exist`
 

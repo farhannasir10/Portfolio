@@ -14,6 +14,10 @@ import { NextResponse } from "next/server";
 
 export const maxDuration = 300;
 
+function isVercel(): boolean {
+  return process.env.VERCEL === "1";
+}
+
 export async function POST(req: Request) {
   const session = await auth();
   if (!session) {
@@ -37,6 +41,16 @@ export async function POST(req: Request) {
   }
 
   const storageKey = makeStorageKey(file.name);
+
+  if (isVercel() && !isSupabaseStorageConfigured()) {
+    return NextResponse.json(
+      {
+        error:
+          "Vercel cannot store uploads on disk. Set NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, SUPABASE_STORAGE_BUCKET, and use direct uploads (NEXT_PUBLIC_SUPABASE_ANON_KEY). See README.",
+      },
+      { status: 503 },
+    );
+  }
 
   if (isSupabaseStorageConfigured()) {
     try {

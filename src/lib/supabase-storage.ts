@@ -79,3 +79,36 @@ export async function uploadFileToSupabasePublic(
 
   return { publicUrl: data.publicUrl };
 }
+
+/**
+ * For browser → Supabase direct uploads (bypasses Vercel body limits / read-only disk).
+ */
+export async function createSignedUploadForAdmin(objectPath: string): Promise<{
+  path: string;
+  token: string;
+  bucket: string;
+  publicUrl: string;
+}> {
+  const bucket = process.env.SUPABASE_STORAGE_BUCKET!.trim();
+  const supabase = getSupabaseAdmin();
+  const { data, error } = await supabase.storage
+    .from(bucket)
+    .createSignedUploadUrl(objectPath, { upsert: true });
+
+  if (error || !data) {
+    console.error("[supabase-storage] createSignedUploadUrl:", error?.message);
+    throw new Error("SIGNED_UPLOAD_FAILED");
+  }
+
+  const { data: pub } = supabase.storage.from(bucket).getPublicUrl(objectPath);
+  if (!pub.publicUrl) {
+    throw new Error("SUPABASE_PUBLIC_URL_FAILED");
+  }
+
+  return {
+    path: data.path,
+    token: data.token,
+    bucket,
+    publicUrl: pub.publicUrl,
+  };
+}
