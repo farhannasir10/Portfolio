@@ -1,4 +1,3 @@
-import { publicFileUrl } from "@/lib/public-file-url";
 import { createHash, randomBytes } from "crypto";
 import { createWriteStream } from "fs";
 import { mkdir, unlink, writeFile } from "fs/promises";
@@ -7,7 +6,9 @@ import { pipeline } from "stream/promises";
 import { Readable, Transform } from "stream";
 
 export const UPLOAD_DIR = path.join(process.cwd(), "uploads");
-export { MAX_CV_BYTES, MAX_IMAGE_BYTES, MAX_VIDEO_BYTES } from "@/lib/upload-limits";
+export const MAX_VIDEO_BYTES = 512 * 1024 * 1024;
+export const MAX_IMAGE_BYTES = 20 * 1024 * 1024;
+export const MAX_CV_BYTES = 15 * 1024 * 1024;
 
 const SAFE_NAME = /^[a-zA-Z0-9._-]+$/;
 
@@ -75,5 +76,5 @@ export async function saveUploadFromFile(
 }
 
 export function fileUrlFromKey(key: string): string {
-  return publicFileUrl(key) ?? "";
+  return `/api/files/${encodeURIComponent(key)}`;
 }

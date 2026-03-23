@@ -1,5 +1,4 @@
 import { MediaType } from "@prisma/client";
-import { publicFileUrl } from "@/lib/public-file-url";
 
 export type ProjectMediaItem = {
   id: string;
@@ -19,7 +18,7 @@ export function getProjectCoverImageKey(
 }
 
 export function fileSrcFromKey(key: string) {
-  return publicFileUrl(key) ?? "";
+  return `/api/files/${encodeURIComponent(key)}`;
 }
 
 /** Card teaser: summary, else stripped markdown excerpt (no line clamp here — UI uses line-clamp). */

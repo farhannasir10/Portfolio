@@ -70,7 +70,7 @@ model CvAsset {
   createdAt    DateTime @default(now())
 }
 
-/** Home page service cards. @@map keeps table name `Service`. */
+/** Home page service cards. @@map keeps table name `Service` (existing DBs). */
 model PortfolioService {
   id          String   @id @default(cuid())
   title       String
