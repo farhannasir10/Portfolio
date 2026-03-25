@@ -1,10 +1,11 @@
 import { auth } from "@/auth";
+import { put } from "@vercel/blob";
 import {
   MAX_CV_BYTES,
   MAX_IMAGE_BYTES,
   MAX_VIDEO_BYTES,
   makeStorageKey,
-  saveUploadFromFile,
+  assertSafeStorageKey,
 } from "@/lib/files";
 import { NextResponse } from "next/server";
 
@@ -29,12 +30,23 @@ export async function POST(req: Request) {
   if (kind === "cv") max = MAX_CV_BYTES;
 
   const storageKey = makeStorageKey(file.name);
+  // Extra guard: avoid uploading files larger than our configured limits.
+  if (typeof file.size === "number" && file.size > max) {
+    return NextResponse.json({ error: "File too large" }, { status: 413 });
+  }
+
+  // In production (Vercel), store the upload in Vercel Blob.
+  // We keep returning `storageKey` so your DB schema can stay unchanged.
   try {
-    await saveUploadFromFile(file, storageKey, max);
+    assertSafeStorageKey(storageKey);
+    await put(storageKey, file, {
+      access: "public",
+      multipart: true,
+      // Match previous "immutable" behavior as much as possible.
+      cacheControlMaxAge: 31536000,
+      allowOverwrite: false,
+    });
   } catch (e) {
-    if (e instanceof Error && e.message === "FILE_TOO_LARGE") {
-      return NextResponse.json({ error: "File too large" }, { status: 413 });
-    }
     console.error(e);
     return NextResponse.json({ error: "Upload failed" }, { status: 500 });
   }

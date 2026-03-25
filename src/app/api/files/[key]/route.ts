@@ -2,6 +2,7 @@ import {
   UPLOAD_DIR,
   assertSafeStorageKey,
 } from "@/lib/files";
+import { get as getBlob } from "@vercel/blob";
 import { createReadStream } from "fs";
 import { stat } from "fs/promises";
 import path from "path";
@@ -34,6 +35,28 @@ export async function GET(
     assertSafeStorageKey(decoded);
   } catch {
     return new Response("Not found", { status: 404 });
+  }
+
+  // On Vercel, read from Blob instead of ephemeral local disk.
+  // `BLOB_READ_WRITE_TOKEN` is provided automatically when you connect a Vercel Blob store.
+  if (process.env.BLOB_READ_WRITE_TOKEN) {
+    try {
+      const res = await getBlob(decoded, { access: "public" });
+      if (!res || res.statusCode !== 200) {
+        return new Response("Not found", { status: 404 });
+      }
+      return new Response(res.stream as unknown as BodyInit, {
+        headers: {
+          "Content-Type": res.blob.contentType ?? "application/octet-stream",
+          "Content-Length": String(res.blob.size),
+          "Cache-Control": res.blob.cacheControl ?? "public, max-age=31536000",
+          // Keep client behavior close to previous local implementation.
+          "Content-Disposition": res.blob.contentDisposition ?? "inline",
+        },
+      });
+    } catch {
+      return new Response("Not found", { status: 404 });
+    }
   }
 
   const filePath = path.join(UPLOAD_DIR, decoded);
