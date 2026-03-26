@@ -46,7 +46,7 @@ export async function GET(
   const token = blobToken();
   if (token) {
     try {
-      const res = await getBlob(decoded, { access: "public", token });
+      const res = await getBlob(decoded, { access: "private", token });
       if (!res || res.statusCode !== 200) {
         return new Response("Not found", { status: 404 });
       }

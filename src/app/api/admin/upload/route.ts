@@ -51,7 +51,7 @@ export async function POST(req: Request) {
       );
     }
     await put(storageKey, file, {
-      access: "public",
+      access: "private",
       multipart: true,
       // Match previous "immutable" behavior as much as possible.
       cacheControlMaxAge: 31536000,
