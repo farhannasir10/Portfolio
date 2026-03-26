@@ -11,6 +11,10 @@ import { NextResponse } from "next/server";
 
 export const maxDuration = 300;
 
+function blobToken() {
+  return process.env.BLOB_READ_WRITE_TOKEN ?? process.env.portfolio_READ_WRITE_TOKEN;
+}
+
 export async function POST(req: Request) {
   const session = await auth();
   if (!session) {
@@ -39,16 +43,25 @@ export async function POST(req: Request) {
   // We keep returning `storageKey` so your DB schema can stay unchanged.
   try {
     assertSafeStorageKey(storageKey);
+    const token = blobToken();
+    if (!token) {
+      return NextResponse.json(
+        { error: "Missing Blob token. Set BLOB_READ_WRITE_TOKEN in Vercel." },
+        { status: 500 },
+      );
+    }
     await put(storageKey, file, {
       access: "public",
       multipart: true,
       // Match previous "immutable" behavior as much as possible.
       cacheControlMaxAge: 31536000,
       allowOverwrite: false,
+      token,
     });
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ error: "Upload failed" }, { status: 500 });
+    const msg = e instanceof Error ? e.message : "Upload failed";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 
   return NextResponse.json({

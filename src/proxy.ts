@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
+// Next.js 16 deprecates the `middleware.ts` file convention in favor of `proxy.ts`.
 export default auth((req) => {
   const { pathname } = req.nextUrl;
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
@@ -16,3 +17,4 @@ export default auth((req) => {
 export const config = {
   matcher: ["/admin/:path*"],
 };
+

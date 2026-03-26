@@ -25,6 +25,10 @@ function mimeForPath(filePath: string): string {
   return EXT_MIME[ext] ?? "application/octet-stream";
 }
 
+function blobToken() {
+  return process.env.BLOB_READ_WRITE_TOKEN ?? process.env.portfolio_READ_WRITE_TOKEN;
+}
+
 export async function GET(
   _req: Request,
   ctx: { params: Promise<{ key: string }> },
@@ -39,9 +43,10 @@ export async function GET(
 
   // On Vercel, read from Blob instead of ephemeral local disk.
   // `BLOB_READ_WRITE_TOKEN` is provided automatically when you connect a Vercel Blob store.
-  if (process.env.BLOB_READ_WRITE_TOKEN) {
+  const token = blobToken();
+  if (token) {
     try {
-      const res = await getBlob(decoded, { access: "public" });
+      const res = await getBlob(decoded, { access: "public", token });
       if (!res || res.statusCode !== 200) {
         return new Response("Not found", { status: 404 });
       }
