@@ -6,7 +6,7 @@ import {
   MAX_CV_BYTES,
   MAX_IMAGE_BYTES,
   MAX_VIDEO_BYTES,
-} from "@/lib/files";
+} from "@/lib/upload-limits";
 
 type Kind = "video" | "image" | "cv";
 
