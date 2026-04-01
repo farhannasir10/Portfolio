@@ -56,9 +56,9 @@ function VideoOrLinkBlock(m: MediaRow) {
 
   if (m.type === MediaType.VIDEO_UPLOAD) {
     return (
-      <div className="overflow-hidden rounded-xl border border-sky-500/10 bg-slate-950/50 shadow-inner shadow-black/30">
+      <div className="w-[min(85vw,520px)] overflow-hidden rounded-xl border border-sky-500/10 bg-slate-950/50 shadow-inner shadow-black/30">
         <video
-          className="max-h-[70vh] w-full bg-black object-contain"
+          className="max-h-[min(70vh,480px)] w-full bg-black object-contain object-center"
           controls
           playsInline
           preload="metadata"
