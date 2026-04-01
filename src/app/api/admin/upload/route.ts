@@ -50,13 +50,17 @@ export async function POST(req: Request) {
         { status: 500 },
       );
     }
-    await put(storageKey, file, {
-      access: "private",
+    const blob = await put(storageKey, file, {
+      access: "public",
       multipart: true,
       // Match previous "immutable" behavior as much as possible.
       cacheControlMaxAge: 31536000,
       allowOverwrite: false,
       token,
+    });
+    return NextResponse.json({
+      storageKey: blob.url,
+      url: blob.url,
     });
   } catch (e) {
     console.error(e);
@@ -64,8 +68,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: msg }, { status: 500 });
   }
 
-  return NextResponse.json({
-    storageKey,
-    url: `/api/files/${encodeURIComponent(storageKey)}`,
-  });
 }

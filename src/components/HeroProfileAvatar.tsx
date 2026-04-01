@@ -1,3 +1,5 @@
+import { publicFileUrl } from "@/lib/public-file-url";
+
 function UserPlaceholder() {
   return (
     <svg
@@ -23,11 +25,12 @@ export function HeroProfileAvatar({
 }: {
   storageKey: string | null | undefined;
 }) {
-  if (storageKey) {
+  const src = publicFileUrl(storageKey);
+  if (src) {
     return (
       // eslint-disable-next-line @next/next/no-img-element
       <img
-        src={`/api/files/${encodeURIComponent(storageKey)}`}
+        src={src}
         alt=""
         width={200}
         height={200}

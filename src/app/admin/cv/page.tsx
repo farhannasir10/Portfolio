@@ -2,6 +2,7 @@ import { deleteCvAsset, setCvFromUpload } from "@/actions/cv";
 import { AdminFileField } from "@/components/AdminFileField";
 import { AdminFormSubmitButton } from "@/components/admin/AdminFormSubmitButton";
 import { AdminNotice } from "@/components/admin/AdminNotice";
+import { publicFileUrl } from "@/lib/public-file-url";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -32,7 +33,7 @@ export default async function AdminCvPage({ searchParams }: Props) {
           <p className="text-zinc-300">
             Active file:{" "}
             <a
-              href={`/api/files/${encodeURIComponent(active.storageKey)}`}
+              href={publicFileUrl(active.storageKey) ?? "#"}
               className="text-cyan-400 underline"
               target="_blank"
               rel="noreferrer"

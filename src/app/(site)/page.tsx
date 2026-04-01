@@ -15,6 +15,7 @@ import {
   getPublishedSkills,
   hasPublishedPosts,
 } from "@/lib/data";
+import { publicFileUrl } from "@/lib/public-file-url";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -150,7 +151,7 @@ export default async function HomePage() {
         {cv ? (
           <p className="mt-10">
             <a
-              href={`/api/files/${encodeURIComponent(cv.storageKey)}`}
+              href={publicFileUrl(cv.storageKey) ?? "#"}
               download={cv.originalName}
               className="btn-secondary inline-flex"
             >

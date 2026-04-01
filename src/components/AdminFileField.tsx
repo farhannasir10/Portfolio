@@ -64,12 +64,12 @@ export function AdminFileField({
             let blobErrorMessage = "";
             try {
               const blob = await blobUpload(safePathname(file.name), file, {
-                access: "private",
+                access: "public",
                 handleUploadUrl: "/api/admin/blob-client-upload",
                 clientPayload: JSON.stringify({ kind }),
                 multipart: file.size > 4 * 1024 * 1024,
               });
-              setStorageKey(blob.pathname);
+              setStorageKey(blob.url);
               setOriginalName(file.name);
               return;
             } catch (err) {

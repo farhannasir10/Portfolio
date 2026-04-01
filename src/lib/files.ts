@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from "crypto";
 import { createWriteStream } from "fs";
 import { mkdir, unlink, writeFile } from "fs/promises";
+import { publicFileUrl } from "@/lib/public-file-url";
 import path from "path";
 import { pipeline } from "stream/promises";
 import { Readable, Transform } from "stream";
@@ -74,5 +75,5 @@ export async function saveUploadFromFile(
 }
 
 export function fileUrlFromKey(key: string): string {
-  return `/api/files/${encodeURIComponent(key)}`;
+  return publicFileUrl(key) ?? "";
 }

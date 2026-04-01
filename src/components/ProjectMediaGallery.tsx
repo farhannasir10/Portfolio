@@ -1,7 +1,8 @@
 import { MediaType } from "@prisma/client";
+import { publicFileUrl } from "@/lib/public-file-url";
 
 function fileSrc(key: string) {
-  return `/api/files/${encodeURIComponent(key)}`;
+  return publicFileUrl(key) ?? "";
 }
 
 function loomEmbedUrl(url: string): string | null {

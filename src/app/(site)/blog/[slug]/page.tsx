@@ -1,5 +1,6 @@
 import { MarkdownBody } from "@/components/MarkdownBody";
 import { getPublishedPostBySlug } from "@/lib/data";
+import { publicFileUrl } from "@/lib/public-file-url";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -17,12 +18,7 @@ export default async function BlogPostPage({ params }: Props) {
   const post = await getPublishedPostBySlug(slug);
   if (!post) notFound();
 
-  const cover =
-    post.coverImage?.startsWith("http") === true
-      ? post.coverImage
-      : post.coverImage
-        ? `/api/files/${encodeURIComponent(post.coverImage)}`
-        : null;
+  const cover = publicFileUrl(post.coverImage);
 
   return (
     <article className="mx-auto max-w-3xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
