@@ -76,7 +76,7 @@ function VideoOrLinkBlock(m: MediaRow) {
   return null;
 }
 
-/** Horizontal scroll for screenshots; videos and links listed below. */
+/** Full-width screenshots; videos and links listed below. */
 export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
   const images = media.filter((m) => m.type === MediaType.IMAGE);
   const videosAndLinks = media.filter(
@@ -90,19 +90,24 @@ export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
           <h2 className="mb-4 text-sm font-semibold tracking-wide text-slate-400">
             Screenshots
           </h2>
-          <div className="-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:thin] sm:-mx-6 sm:px-6 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-sky-500/25">
+          <div className="flex flex-col gap-5">
             {images.map((m) => (
-              <figure
-                key={m.id}
-                className="w-[min(85vw,520px)] shrink-0 snap-center snap-always"
-              >
+              <figure key={m.id} className="w-full">
                 <div className="overflow-hidden rounded-xl border border-sky-500/10 bg-slate-950/50 shadow-lg shadow-black/40">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={fileSrcFromKey(m.url)}
-                    alt={m.caption ?? "Project screenshot"}
-                    className="max-h-[min(70vh,480px)] w-full object-contain object-center"
-                  />
+                  <a
+                    href={fileSrcFromKey(m.url)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="Open full size"
+                    className="block"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={fileSrcFromKey(m.url)}
+                      alt={m.caption ?? "Project screenshot"}
+                      className="max-h-[min(78vh,760px)] w-full object-contain object-center"
+                    />
+                  </a>
                 </div>
                 {m.caption ? (
                   <figcaption className="mt-2 text-sm text-slate-500">
