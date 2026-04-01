@@ -61,6 +61,7 @@ export function AdminFileField({
             }
 
             // Primary path: browser uploads directly to Vercel Blob to avoid Vercel body limits.
+            let blobErrorMessage = "";
             try {
               const blob = await blobUpload(safePathname(file.name), file, {
                 access: "private",
@@ -71,7 +72,9 @@ export function AdminFileField({
               setStorageKey(blob.pathname);
               setOriginalName(file.name);
               return;
-            } catch {
+            } catch (err) {
+              blobErrorMessage =
+                err instanceof Error ? err.message : "Blob upload failed";
               // Fallback to server route (local dev / non-blob setups).
             }
 
@@ -83,20 +86,26 @@ export function AdminFileField({
               body: fd,
               credentials: "include",
             });
-            const j = (await res.json()) as {
+            const j = (await res.json().catch(() => ({}))) as {
               error?: string;
               storageKey?: string;
             };
             if (!res.ok) {
-              setErr(j.error ?? "Upload failed");
+              const serverErr = j.error ?? "Upload failed";
+              setErr(
+                blobErrorMessage
+                  ? `${blobErrorMessage}. Fallback failed: ${serverErr}`
+                  : serverErr,
+              );
               return;
             }
             if (j.storageKey) {
               setStorageKey(j.storageKey);
               setOriginalName(file.name);
             }
-          } catch {
-            setErr("Network error");
+          } catch (err) {
+            const msg = err instanceof Error ? err.message : "Network error";
+            setErr(msg);
           } finally {
             setBusy(false);
           }
