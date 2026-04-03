@@ -15,10 +15,10 @@ type MediaRow = {
   caption: string | null;
 };
 
-const galleryTrackClass =
+const horizontalTrackClass =
   "-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:thin] sm:-mx-6 sm:px-6 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-sky-500/25";
 
-const galleryItemClass =
+const slideClass =
   "w-[min(85vw,520px)] shrink-0 snap-center snap-always";
 
 const mediaFrameClass =
@@ -67,71 +67,66 @@ function ExternalLinkBlock(m: MediaRow) {
   );
 }
 
-function GalleryFigure({ m }: { m: MediaRow }) {
-  if (m.type === MediaType.IMAGE) {
-    return (
-      <figure className={galleryItemClass}>
-        <div className={mediaFrameClass}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={fileSrcFromKey(m.url)}
-            alt={m.caption ?? "Project screenshot"}
-            className={mediaMaxClass}
-          />
-        </div>
-        {m.caption ? (
-          <figcaption className="mt-2 text-sm text-slate-500">
-            {m.caption}
-          </figcaption>
-        ) : null}
-      </figure>
-    );
-  }
-
-  if (m.type === MediaType.VIDEO_UPLOAD) {
-    return (
-      <figure className={galleryItemClass}>
-        <div className={mediaFrameClass}>
-          <video
-            className={mediaMaxClass}
-            controls
-            playsInline
-            preload="metadata"
-            src={fileSrcFromKey(m.url)}
-          />
-        </div>
-        {m.caption ? (
-          <figcaption className="mt-2 text-sm text-slate-500">
-            {m.caption}
-          </figcaption>
-        ) : null}
-      </figure>
-    );
-  }
-
-  return null;
-}
-
-/** Horizontal scroll for screenshots and uploaded videos (sort order preserved). */
+/** Screenshots: horizontal row (same layout as videos). */
 export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
-  const galleryItems = media.filter(
-    (m) =>
-      m.type === MediaType.IMAGE || m.type === MediaType.VIDEO_UPLOAD,
-  );
+  const images = media.filter((m) => m.type === MediaType.IMAGE);
+  const videoUploads = media.filter((m) => m.type === MediaType.VIDEO_UPLOAD);
   const externalOnly = media.filter(
     (m) => m.type === MediaType.EXTERNAL_LINK,
   );
 
   return (
     <>
-      {galleryItems.length > 0 ? (
-        <section className="mt-10" aria-label="Project gallery">
+      {images.length > 0 ? (
+        <section className="mt-10" aria-label="Project screenshots">
           <h2 className="mb-4 text-sm font-semibold tracking-wide text-slate-400">
-            Gallery
+            Screenshots
           </h2>
-          <div className={galleryTrackClass}>
-            {galleryItems.map((m) => (
-              <GalleryFigure key={m.id} m={m} />
+          <div className={horizontalTrackClass}>
+            {images.map((m) => (
+              <figure key={m.id} className={slideClass}>
+                <div className={mediaFrameClass}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={fileSrcFromKey(m.url)}
+                    alt={m.caption ?? "Project screenshot"}
+                    className={mediaMaxClass}
+                  />
+                </div>
+                {m.caption ? (
+                  <figcaption className="mt-2 text-sm text-slate-500">
+                    {m.caption}
+                  </figcaption>
+                ) : null}
+              </figure>
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {videoUploads.length > 0 ? (
+        <section className="mt-10" aria-label="Project videos">
+          <h2 className="mb-4 text-sm font-semibold tracking-wide text-slate-400">
+            Videos
+          </h2>
+          <div className={horizontalTrackClass}>
+            {videoUploads.map((m) => (
+              <figure key={m.id} className={slideClass}>
+                <div className={mediaFrameClass}>
+                  <video
+                    className={mediaMaxClass}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    src={fileSrcFromKey(m.url)}
+                  />
+                </div>
+                {m.caption ? (
+                  <figcaption className="mt-2 text-sm text-slate-500">
+                    {m.caption}
+                  </figcaption>
+                ) : null}
+              </figure>
             ))}
           </div>
         </section>
