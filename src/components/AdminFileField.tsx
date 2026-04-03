@@ -67,7 +67,8 @@ export function AdminFileField({
                 access: "public",
                 handleUploadUrl: "/api/admin/blob-client-upload",
                 clientPayload: JSON.stringify({ kind }),
-                multipart: file.size > 4 * 1024 * 1024,
+                // Multipart can add overhead; for images (< ~20MB) single PUT is usually faster.
+                multipart: kind === "video" && file.size > 10 * 1024 * 1024,
               });
               setStorageKey(blob.url);
               setOriginalName(file.name);

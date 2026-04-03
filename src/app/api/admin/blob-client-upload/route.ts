@@ -49,19 +49,8 @@ export async function POST(req: Request) {
           if (parsed.kind) kind = parsed.kind;
         } catch {}
         return {
-          allowedContentTypes: [
-            "image/png",
-            "image/jpeg",
-            "image/webp",
-            "image/gif",
-            "video/mp4",
-            "video/webm",
-            "video/quicktime",
-            "video/x-matroska",
-            "video/x-msvideo",
-            "video/avi",
-            "application/pdf",
-          ],
+          // Wildcards prevent “wrong MIME type” falling back to the slower server upload.
+          allowedContentTypes: ["image/*", "video/*", "application/pdf"],
           maximumSizeInBytes: maxBytesForKind(kind),
           addRandomSuffix: true,
         };
