@@ -1,6 +1,5 @@
 "use client";
 
-import { upload as blobUpload } from "@vercel/blob/client";
 import { useState } from "react";
 import {
   MAX_CV_BYTES,
@@ -14,11 +13,6 @@ function maxBytesFor(kind: Kind): number {
   if (kind === "video") return MAX_VIDEO_BYTES;
   if (kind === "cv") return MAX_CV_BYTES;
   return MAX_IMAGE_BYTES;
-}
-
-function safePathname(fileName: string): string {
-  const clean = fileName.replace(/[^\w.-]/g, "_");
-  return `${Date.now()}-${clean}`;
 }
 
 export function AdminFileField({
@@ -60,25 +54,6 @@ export function AdminFileField({
               return;
             }
 
-            // Primary path: browser uploads directly to Vercel Blob to avoid Vercel body limits.
-            let blobErrorMessage = "";
-            try {
-              const blob = await blobUpload(safePathname(file.name), file, {
-                access: "public",
-                handleUploadUrl: "/api/admin/blob-client-upload",
-                clientPayload: JSON.stringify({ kind }),
-                // Multipart can add overhead; for images (< ~20MB) single PUT is usually faster.
-                multipart: kind === "video" && file.size > 10 * 1024 * 1024,
-              });
-              setStorageKey(blob.url);
-              setOriginalName(file.name);
-              return;
-            } catch (err) {
-              blobErrorMessage =
-                err instanceof Error ? err.message : "Blob upload failed";
-              // Fallback to server route (local dev / non-blob setups).
-            }
-
             const fd = new FormData();
             fd.append("file", file);
             fd.append("kind", kind);
@@ -93,11 +68,7 @@ export function AdminFileField({
             };
             if (!res.ok) {
               const serverErr = j.error ?? "Upload failed";
-              setErr(
-                blobErrorMessage
-                  ? `${blobErrorMessage}. Fallback failed: ${serverErr}`
-                  : serverErr,
-              );
+              setErr(serverErr);
               return;
             }
             if (j.storageKey) {
