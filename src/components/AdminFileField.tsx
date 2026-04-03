@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { upload } from "@vercel/blob/client";
 import {
   MAX_CV_BYTES,
   MAX_IMAGE_BYTES,
@@ -13,6 +14,15 @@ function maxBytesFor(kind: Kind): number {
   if (kind === "video") return MAX_VIDEO_BYTES;
   if (kind === "cv") return MAX_CV_BYTES;
   return MAX_IMAGE_BYTES;
+}
+
+/** Safe pathname for Blob; store adds a random suffix server-side. */
+function blobPathname(file: File): string {
+  const raw = file.name.trim() || "file";
+  const dot = raw.lastIndexOf(".");
+  const ext = dot >= 0 ? raw.slice(dot, dot + 13) : "";
+  const id = crypto.randomUUID().replace(/-/g, "").slice(0, 24);
+  return `${id}${ext}`;
 }
 
 export function AdminFileField({
@@ -54,27 +64,19 @@ export function AdminFileField({
               return;
             }
 
-            const fd = new FormData();
-            fd.append("file", file);
-            fd.append("kind", kind);
-            const res = await fetch("/api/admin/upload", {
-              method: "POST",
-              body: fd,
-              credentials: "include",
+            // Client → Vercel Blob directly (via token from our API). Sending the
+            // whole file through /api/admin/upload hits Vercel's ~4.5MB body limit,
+            // so videos fail there while small images still worked.
+            const multipart =
+              kind === "video" || file.size > 4 * 1024 * 1024;
+            const blob = await upload(blobPathname(file), file, {
+              access: "public",
+              handleUploadUrl: "/api/admin/blob-client-upload",
+              clientPayload: JSON.stringify({ kind }),
+              multipart,
             });
-            const j = (await res.json().catch(() => ({}))) as {
-              error?: string;
-              storageKey?: string;
-            };
-            if (!res.ok) {
-              const serverErr = j.error ?? "Upload failed";
-              setErr(serverErr);
-              return;
-            }
-            if (j.storageKey) {
-              setStorageKey(j.storageKey);
-              setOriginalName(file.name);
-            }
+            setStorageKey(blob.url);
+            setOriginalName(file.name);
           } catch (err) {
             const msg = err instanceof Error ? err.message : "Network error";
             setErr(msg);
