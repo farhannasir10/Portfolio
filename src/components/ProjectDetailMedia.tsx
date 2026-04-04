@@ -20,7 +20,7 @@ const slideClass =
   "w-[min(85vw,520px)] shrink-0 snap-center snap-always";
 
 const mediaFrameClass =
-  "overflow-hidden rounded-xl border border-white/[0.1] bg-zinc-950/80 shadow-[0_20px_50px_-24px_rgba(79,255,232,0.12)]";
+  "overflow-hidden rounded-xl border border-[color:var(--border)] bg-[var(--card)] shadow-[0_20px_50px_-24px_rgba(0,0,0,0.2)]";
 
 const mediaMaxClass =
   "max-h-[min(70vh,480px)] w-full bg-black object-contain object-center";
@@ -31,7 +31,7 @@ function ExternalLinkBlock(m: MediaRow) {
   const loom = loomEmbedUrl(m.url);
   if (loom) {
     return (
-      <div className="overflow-hidden rounded-xl border border-white/[0.1] bg-zinc-900/60 shadow-[inset_0_1px_0_rgba(255,255,255,0.04)]">
+      <div className="overflow-hidden rounded-xl border border-[color:var(--border)] bg-[var(--card)] shadow-[inset_0_1px_0_rgba(0,0,0,0.04)]">
         <div className="aspect-video w-full bg-black">
           <iframe
             title="Embedded video"
@@ -41,7 +41,7 @@ function ExternalLinkBlock(m: MediaRow) {
           />
         </div>
         {m.caption ? (
-          <p className="border-t border-white/[0.06] bg-white/[0.03] px-4 py-3 text-sm text-zinc-400">
+          <p className="border-t border-[color:var(--border)] bg-[color:var(--contact-surface-bg)] px-4 py-3 text-sm text-[var(--muted)]">
             {m.caption}
           </p>
         ) : null}
@@ -49,17 +49,17 @@ function ExternalLinkBlock(m: MediaRow) {
     );
   }
   return (
-    <div className="rounded-xl border border-white/[0.1] bg-zinc-900/40 px-5 py-6">
+    <div className="rounded-xl border border-[color:var(--border)] bg-[var(--card)] px-5 py-6">
       <a
         href={m.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="break-all text-sm text-orange-500 underline decoration-orange-500/35 underline-offset-4 transition hover:text-orange-400"
+        className="break-all text-sm text-[color:var(--accent-bright)] underline decoration-[color:var(--accent)] decoration-opacity-40 underline-offset-4 transition hover:text-[color:var(--link-hover-subtle)]"
       >
         {m.url}
       </a>
       {m.caption ? (
-        <p className="mt-3 text-sm text-zinc-500">{m.caption}</p>
+        <p className="mt-3 text-sm text-[var(--muted)]">{m.caption}</p>
       ) : null}
     </div>
   );
@@ -77,7 +77,7 @@ export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
     <>
       {images.length > 0 ? (
         <section className="mt-10" aria-label="Project screenshots">
-          <h2 className="mb-4 text-sm font-bold tracking-widest text-zinc-500 uppercase">
+          <h2 className="mb-4 text-sm font-bold tracking-widest text-[var(--muted)] uppercase">
             Screenshots
           </h2>
           <MediaHorizontalScroller>
@@ -92,7 +92,7 @@ export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
                   />
                 </div>
                 {m.caption ? (
-                  <figcaption className="mt-2 text-sm text-zinc-500">
+                  <figcaption className="mt-2 text-sm text-[var(--muted)]">
                     {m.caption}
                   </figcaption>
                 ) : null}
@@ -104,7 +104,7 @@ export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
 
       {videoUploads.length > 0 ? (
         <section className="mt-10" aria-label="Project videos">
-          <h2 className="mb-4 text-sm font-bold tracking-widest text-zinc-500 uppercase">
+          <h2 className="mb-4 text-sm font-bold tracking-widest text-[var(--muted)] uppercase">
             Videos
           </h2>
           <MediaHorizontalScroller>
@@ -120,7 +120,7 @@ export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
                   />
                 </div>
                 {m.caption ? (
-                  <figcaption className="mt-2 text-sm text-zinc-500">
+                  <figcaption className="mt-2 text-sm text-[var(--muted)]">
                     {m.caption}
                   </figcaption>
                 ) : null}
@@ -132,7 +132,7 @@ export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
 
       {externalOnly.length > 0 ? (
         <section className="mt-10" aria-label="Videos and links">
-          <h2 className="mb-4 text-sm font-bold tracking-widest text-zinc-500 uppercase">
+          <h2 className="mb-4 text-sm font-bold tracking-widest text-[var(--muted)] uppercase">
             Videos & links
           </h2>
           <ul className="flex flex-col gap-6">

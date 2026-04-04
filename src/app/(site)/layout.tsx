@@ -1,4 +1,5 @@
 import { SiteSidebar } from "@/components/SiteSidebar";
+import { SiteThemeProvider } from "@/components/SiteThemeContext";
 import { SiteTopBar } from "@/components/SiteTopBar";
 import {
   getOrCreateSiteSettings,
@@ -26,19 +27,20 @@ export default async function SiteLayout({
     settings.heroTitle?.trim() || "Portfolio";
 
   return (
-    <div className="site-cosmos relative min-h-full overflow-x-hidden text-zinc-300">
-      <div
-        className="bg-portfolio-mesh pointer-events-none fixed inset-0 -z-20"
-        aria-hidden
-      />
-      <div className="site-aurora pointer-events-none fixed inset-0 -z-10" aria-hidden />
-      <div className="relative z-[1] flex min-h-screen">
-        <SiteSidebar
-          showBlog={showBlog}
-          showServices={showServices}
-          showSkills={showSkills}
+    <SiteThemeProvider>
+      <div className="site-cosmos relative min-h-full overflow-x-hidden">
+        <div
+          className="bg-portfolio-mesh pointer-events-none fixed inset-0 -z-20"
+          aria-hidden
         />
-        <div className="flex min-w-0 flex-1 flex-col">
+        <div className="site-aurora pointer-events-none fixed inset-0 -z-10" aria-hidden />
+        <div className="relative z-[1] flex min-h-screen">
+          <SiteSidebar
+            showBlog={showBlog}
+            showServices={showServices}
+            showSkills={showSkills}
+          />
+          <div className="flex min-w-0 flex-1 flex-col bg-[var(--site-main-bg)]">
           <SiteTopBar
             brandLabel={brand}
             linkedinUrl={settings.linkedinUrl}
@@ -48,10 +50,10 @@ export default async function SiteLayout({
             showSkills={showSkills}
           />
           <div className="flex-1">{children}</div>
-          <footer className="footer-glow border-t border-zinc-900 px-4 py-14 sm:px-6 lg:px-8">
+          <footer className="footer-glow border-t border-[color:var(--site-section-border)] px-4 py-14 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-5xl text-center">
               <p className="kicker-sky opacity-90">Portfolio</p>
-              <p className="mt-3 text-xs text-zinc-500">
+              <p className="mt-3 text-xs text-[var(--muted)]">
                 © {new Date().getFullYear()} · Built with Next.js
               </p>
             </div>
@@ -59,5 +61,6 @@ export default async function SiteLayout({
         </div>
       </div>
     </div>
+    </SiteThemeProvider>
   );
 }

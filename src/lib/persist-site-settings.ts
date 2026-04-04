@@ -5,6 +5,9 @@ export async function persistSiteSettingsFromForm(formData: FormData) {
   const heroTitle = String(formData.get("heroTitle") ?? "").trim();
   const heroSubtitle = String(formData.get("heroSubtitle") ?? "").trim();
   const aboutMarkdown = String(formData.get("aboutMarkdown") ?? "");
+  const aboutAccentWord = String(formData.get("aboutAccentWord") ?? "").trim() || "Me";
+  const aboutTagline = String(formData.get("aboutTagline") ?? "").trim();
+  const aboutRole = String(formData.get("aboutRole") ?? "").trim() || "Full stack developer";
   const email = String(formData.get("email") ?? "").trim() || null;
   const linkedinUrl = String(formData.get("linkedinUrl") ?? "").trim() || null;
   const githubUrl = String(formData.get("githubUrl") ?? "").trim() || null;
@@ -14,6 +17,11 @@ export async function persistSiteSettingsFromForm(formData: FormData) {
   const existing = await prisma.siteSettings.findUnique({
     where: { id: "default" },
   });
+
+  const aboutYearsStat =
+    String(formData.get("aboutYearsStat") ?? "").trim() ||
+    existing?.aboutYearsStat ||
+    "3+";
 
   let profileImage: string | null;
   if (clearProfile) {
@@ -32,6 +40,10 @@ export async function persistSiteSettingsFromForm(formData: FormData) {
       heroTitle: heroTitle || "Freelance software engineer",
       heroSubtitle: heroSubtitle || "",
       aboutMarkdown,
+      aboutAccentWord,
+      aboutTagline,
+      aboutRole,
+      aboutYearsStat,
       email,
       linkedinUrl,
       githubUrl,
@@ -41,6 +53,10 @@ export async function persistSiteSettingsFromForm(formData: FormData) {
       heroTitle: heroTitle || "Freelance software engineer",
       heroSubtitle: heroSubtitle || "",
       aboutMarkdown,
+      aboutAccentWord,
+      aboutTagline,
+      aboutRole,
+      aboutYearsStat,
       email,
       linkedinUrl,
       githubUrl,

@@ -91,13 +91,7 @@ export function MediaHorizontalScroller({
     el.scrollBy({ left: dir * delta, behavior: "smooth" });
   };
 
-  const btnClass =
-    "flex h-9 w-9 shrink-0 items-center justify-center rounded-full sm:h-10 sm:w-10 " +
-    "border border-orange-500/35 bg-zinc-950/90 text-orange-400 shadow-[0_8px_24px_-8px_rgba(0,0,0,0.85)] backdrop-blur-sm " +
-    "transition-[opacity,transform,color,background-color] duration-200 " +
-    "hover:border-orange-400/55 hover:bg-zinc-900/95 hover:text-orange-300 " +
-    "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500/60 " +
-    "disabled:pointer-events-none disabled:opacity-25";
+  const btnClass = "media-h-scroll-btn";
 
   const trackCn = `${trackClass} ${className ?? ""}`.trim();
 

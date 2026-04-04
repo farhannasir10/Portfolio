@@ -1,7 +1,7 @@
+import { AboutSection } from "@/components/AboutSection";
 import { HeroProfileAvatar } from "@/components/HeroProfileAvatar";
 import { HomeSkills } from "@/components/HomeSkills";
 import { HeroTitle } from "@/components/HeroTitle";
-import { MarkdownBody } from "@/components/MarkdownBody";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionHeading } from "@/components/SectionHeading";
 import { ServiceDescription } from "@/components/ServiceDescription";
@@ -16,7 +16,6 @@ import {
   getPublishedSkills,
   hasPublishedPosts,
 } from "@/lib/data";
-import { publicFileUrl } from "@/lib/public-file-url";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -45,7 +44,7 @@ export default async function HomePage() {
           <div className="relative flex min-w-0 flex-1 flex-col gap-5">
             <p className="kicker">Freelance · Software engineer</p>
             <HeroTitle title={settings.heroTitle} />
-            <p className="max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+            <p className="max-w-xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
               {settings.heroSubtitle}
             </p>
             <div className="flex flex-wrap gap-3 pt-1">
@@ -65,7 +64,7 @@ export default async function HomePage() {
 
       <section
         id="projects"
-        className="site-section-slice scroll-mt-36 border-t border-zinc-900 py-20 md:py-24"
+        className="site-section-slice scroll-mt-36 border-t border-[color:var(--site-section-border)] py-20 md:py-24"
       >
         <SectionHeading kicker="Portfolio" title="Projects" />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -78,7 +77,7 @@ export default async function HomePage() {
       {services.length > 0 ? (
         <section
           id="services"
-          className="site-section-slice scroll-mt-36 border-t border-zinc-900 py-20 md:py-24"
+          className="site-section-slice scroll-mt-36 border-t border-[color:var(--site-section-border)] py-20 md:py-24"
         >
           <SectionHeading kicker="What I do" title="Services" />
           <div className="grid gap-4 md:grid-cols-3">
@@ -87,13 +86,10 @@ export default async function HomePage() {
                 key={s.id}
                 className="surface-card surface-card-hover relative p-5 sm:p-6"
               >
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-orange-500/20 bg-orange-500/5">
-                  <ServiceIcon
-                    iconKey={s.iconKey}
-                    className="h-6 w-6 text-orange-500"
-                  />
+                <div className="service-icon-booth">
+                  <ServiceIcon iconKey={s.iconKey} className="h-6 w-6 text-[color:var(--accent-bright)]" />
                 </div>
-                <h3 className="text-base font-semibold text-zinc-100">{s.title}</h3>
+                <h3 className="text-base font-semibold text-[var(--text)]">{s.title}</h3>
                 <ServiceDescription text={s.description} />
               </div>
             ))}
@@ -104,10 +100,10 @@ export default async function HomePage() {
       {skills.length > 0 ? (
         <section
           id="skills"
-          className="site-section-slice scroll-mt-36 border-t border-zinc-900 py-20 md:py-24"
+          className="site-section-slice scroll-mt-36 border-t border-[color:var(--site-section-border)] py-20 md:py-24"
         >
           <SectionHeading kicker="Stack" title="Skills" />
-          <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-zinc-500">
+          <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-[var(--muted)]">
             Tools and technologies I work with.
           </p>
           <HomeSkills skills={skills} />
@@ -117,10 +113,10 @@ export default async function HomePage() {
       {showBlog ? (
         <section
           id="blog"
-          className="site-section-slice scroll-mt-36 border-t border-zinc-900 py-20 md:py-24"
+          className="site-section-slice scroll-mt-36 border-t border-[color:var(--site-section-border)] py-20 md:py-24"
         >
           <SectionHeading kicker="Writing" title="Blog" />
-          <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-zinc-500">
+          <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-[var(--muted)]">
             Notes, tutorials, and build logs.
           </p>
           <ul className="flex flex-col gap-3">
@@ -130,16 +126,16 @@ export default async function HomePage() {
                   href={`/blog/${post.slug}`}
                   className="surface-card surface-card-hover group block p-5 sm:p-6"
                 >
-                  <span className="text-lg font-semibold tracking-tight text-zinc-100 transition group-hover:text-orange-500">
+                  <span className="text-lg font-semibold tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
                     {post.title}
                   </span>
                   {post.excerpt ? (
-                    <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+                    <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
                       {post.excerpt}
                     </p>
                   ) : null}
                   {post.publishedAt ? (
-                    <p className="mt-3 text-xs text-zinc-600">
+                    <p className="mt-3 text-xs text-[var(--dim)]">
                       {post.publishedAt.toLocaleDateString(undefined, {
                         year: "numeric",
                         month: "long",
@@ -154,33 +150,22 @@ export default async function HomePage() {
         </section>
       ) : null}
 
-      <section
-        id="about"
-        className="site-section-slice scroll-mt-36 border-t border-zinc-900 py-20 md:py-24"
-      >
-        <SectionHeading kicker="Background" title="About" />
-        <div className="max-w-3xl">
-          <MarkdownBody content={settings.aboutMarkdown} brighterBody />
-        </div>
-        {cv ? (
-          <p className="mt-10">
-            <a
-              href={publicFileUrl(cv.storageKey) ?? "#"}
-              download={cv.originalName}
-              className="btn-secondary btn-cv-download inline-flex"
-            >
-              Download CV
-            </a>
-          </p>
-        ) : null}
-      </section>
+      <AboutSection
+        settings={settings}
+        skills={skills.map((s) => ({
+          id: s.id,
+          name: s.name,
+          category: s.category ?? null,
+        }))}
+        cv={cv}
+      />
 
       <section
         id="contact"
         className="contact-section site-section-slice scroll-mt-36 mt-4 border-t-0 px-6 py-16 sm:px-10 sm:py-20"
       >
         <SectionHeading kicker="Let&apos;s talk" title="Contact" />
-        <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-zinc-500">
+        <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-[var(--muted)]">
           Available for freelance engagements and collaborations.
         </p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -190,14 +175,14 @@ export default async function HomePage() {
               className="surface-card surface-card-hover flex flex-col gap-2 p-5"
             >
               <span className="kicker-sky opacity-90">Email</span>
-              <span className="break-all text-sm font-medium text-zinc-100">
+              <span className="break-all text-sm font-medium text-[var(--text)]">
                 {settings.email}
               </span>
             </a>
           ) : (
             <div className="surface-card flex flex-col gap-2 p-5 opacity-90">
               <span className="kicker-sky opacity-90">Email</span>
-              <span className="text-sm text-zinc-500">Not configured</span>
+              <span className="text-sm text-[var(--muted)]">Not configured</span>
             </div>
           )}
           {settings.linkedinUrl ? (
@@ -208,7 +193,7 @@ export default async function HomePage() {
               className="surface-card surface-card-hover flex flex-col gap-2 p-5"
             >
               <span className="kicker-sky opacity-90">LinkedIn</span>
-              <span className="text-sm font-medium text-zinc-100">Profile</span>
+              <span className="text-sm font-medium text-[var(--text)]">Profile</span>
             </a>
           ) : null}
           {settings.githubUrl ? (
@@ -219,7 +204,7 @@ export default async function HomePage() {
               className="surface-card surface-card-hover flex flex-col gap-2 p-5"
             >
               <span className="kicker-sky opacity-90">GitHub</span>
-              <span className="text-sm font-medium text-zinc-100">Profile</span>
+              <span className="text-sm font-medium text-[var(--text)]">Profile</span>
             </a>
           ) : null}
         </div>

@@ -8,7 +8,7 @@ function UserPlaceholder() {
       viewBox="0 0 24 24"
       strokeWidth={1}
       stroke="currentColor"
-      className="h-14 w-14 text-zinc-600"
+      className="h-14 w-14 text-[var(--dim)]"
       aria-hidden
     >
       <path
@@ -34,14 +34,14 @@ export function HeroProfileAvatar({
         alt=""
         width={200}
         height={200}
-        className="relative z-10 h-40 w-40 shrink-0 rounded-2xl border border-zinc-800 object-cover shadow-xl shadow-black/40 md:h-44 md:w-44"
+        className="relative z-10 h-40 w-40 shrink-0 rounded-2xl border border-[color:var(--border)] object-cover shadow-xl shadow-black/25 md:h-44 md:w-44"
       />
     );
   }
 
   return (
     <div
-      className="relative z-10 flex h-40 w-40 shrink-0 items-center justify-center rounded-2xl border border-dashed border-zinc-700 bg-zinc-950 md:h-44 md:w-44"
+      className="relative z-10 flex h-40 w-40 shrink-0 items-center justify-center rounded-2xl border border-dashed border-[color:var(--border)] bg-[var(--card)] md:h-44 md:w-44"
       title="Profile photo"
       aria-label="Profile photo placeholder"
     >

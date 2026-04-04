@@ -30,14 +30,14 @@ export function ServiceDescription({ text }: { text: string }) {
     <div className="mt-2">
       <p
         ref={pRef}
-        className={`text-sm leading-relaxed text-zinc-500 ${expanded ? "" : "line-clamp-2"}`}
+        className={`text-sm leading-relaxed text-[var(--muted)] ${expanded ? "" : "line-clamp-2"}`}
       >
         {trimmed}
       </p>
       {showToggle ? (
         <button
           type="button"
-          className="mt-1 text-sm font-medium text-orange-500 hover:text-orange-400"
+          className="mt-1 text-sm font-medium text-[var(--accent-bright)] hover:text-[var(--link-hover-subtle)]"
           aria-expanded={expanded}
           aria-label={expanded ? "Collapse description" : "Expand description"}
           onClick={() => setExpanded((e) => !e)}

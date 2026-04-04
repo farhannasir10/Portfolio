@@ -29,7 +29,7 @@ export function ProjectCard({ project }: { project: Project }) {
 
   return (
     <article className="project-card-wrap surface-card surface-card-hover flex h-full flex-col overflow-hidden">
-      <div className="relative aspect-[16/10] overflow-hidden bg-zinc-950">
+      <div className="relative aspect-[16/10] overflow-hidden bg-[var(--project-placeholder-to)]">
         <div className="project-card-shine" aria-hidden />
         {coverKey ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -39,23 +39,23 @@ export function ProjectCard({ project }: { project: Project }) {
             className="project-card-media h-full w-full object-cover"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center border-b border-white/[0.06] bg-gradient-to-br from-zinc-900 to-zinc-950">
-            <span className="text-xs font-medium tracking-widest text-zinc-600 uppercase">
+          <div className="flex h-full w-full items-center justify-center border-b border-[color:var(--border)] bg-gradient-to-br from-[var(--project-placeholder-from)] to-[var(--project-placeholder-to)]">
+            <span className="text-xs font-medium tracking-widest text-[var(--dim)] uppercase">
               No cover
             </span>
           </div>
         )}
       </div>
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <h3 className="text-lg font-bold tracking-tight text-zinc-100 sm:text-xl">
+        <h3 className="text-lg font-bold tracking-tight text-[var(--text)] sm:text-xl">
           {project.title}
         </h3>
         {teaser ? (
-          <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-zinc-500">
+          <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-[var(--muted)]">
             {teaser}
           </p>
         ) : (
-          <p className="mt-3 text-sm italic text-zinc-600">No description yet.</p>
+          <p className="mt-3 text-sm italic text-[var(--dim)]">No description yet.</p>
         )}
         {project.stack ? (
           <StackPills stack={project.stack} className="mt-4" cardHighlight />

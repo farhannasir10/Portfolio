@@ -12,11 +12,14 @@ export async function createSkill(formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   if (!name) throw new Error("Name required");
 
+  const categoryRaw = String(formData.get("category") ?? "").trim();
+  const category = categoryRaw.length > 0 ? categoryRaw : null;
+
   const sortOrder = Number(formData.get("sortOrder") ?? 0) || 0;
   const published = formData.get("published") === "on";
 
   await prismaPortfolioSkills().create({
-    data: { name, sortOrder, published },
+    data: { name, category, sortOrder, published },
   });
 
   revalidatePath("/");
@@ -31,12 +34,15 @@ export async function updateSkill(skillId: string, formData: FormData) {
   const name = String(formData.get("name") ?? "").trim();
   if (!name) throw new Error("Name required");
 
+  const categoryRaw = String(formData.get("category") ?? "").trim();
+  const category = categoryRaw.length > 0 ? categoryRaw : null;
+
   const sortOrder = Number(formData.get("sortOrder") ?? 0) || 0;
   const published = formData.get("published") === "on";
 
   await prismaPortfolioSkills().update({
     where: { id: skillId },
-    data: { name, sortOrder, published },
+    data: { name, category, sortOrder, published },
   });
 
   revalidatePath("/");

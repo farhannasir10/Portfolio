@@ -3,6 +3,7 @@ import { AdminFormSubmitButton } from "@/components/admin/AdminFormSubmitButton"
 import { AdminNotice } from "@/components/admin/AdminNotice";
 import { SkillDeleteForm } from "@/components/admin/SkillDeleteForm";
 import { prismaPortfolioSkills } from "@/lib/prisma-portfolio-skill";
+import { SKILL_CATEGORY_PRESETS } from "@/lib/skill-category-options";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
@@ -37,6 +38,21 @@ export default async function EditSkillPage({ params, searchParams }: Props) {
             defaultValue={skill.name}
             className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
           />
+        </div>
+        <div>
+          <label className="block text-sm text-zinc-400">About card group (optional)</label>
+          <input
+            name="category"
+            list="skill-category-presets"
+            defaultValue={skill.category ?? ""}
+            placeholder="e.g. Frontend"
+            className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
+          />
+          <datalist id="skill-category-presets">
+            {SKILL_CATEGORY_PRESETS.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
         </div>
         <div>
           <label className="block text-sm text-zinc-400">Sort order</label>

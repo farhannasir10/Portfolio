@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { SiteThemeToggle } from "@/components/SiteThemeToggle";
 
 export function SiteTopBar({
   brandLabel,
@@ -23,26 +24,29 @@ export function SiteTopBar({
       <div className="flex h-14 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="truncate text-sm font-semibold tracking-tight text-zinc-100 transition hover:text-orange-500"
+          className="truncate text-sm font-semibold tracking-tight text-[var(--muted)] transition hover:text-[var(--accent-bright)]"
         >
           {short}
         </Link>
-        <div className="flex items-center gap-4 sm:gap-6">
-          <nav className="hidden items-center gap-5 text-sm text-zinc-400 sm:flex">
-            <Link href="/" className="transition hover:text-orange-500">
-              Home
-            </Link>
-            <Link href="/#projects" className="transition hover:text-orange-500">
-              Work
-            </Link>
-          </nav>
-          <div className="flex items-center gap-2 border-l border-zinc-800 pl-4 sm:pl-6">
+        <div className="flex items-center gap-3 sm:gap-5">
+          <div className="flex items-center gap-3">
+            <SiteThemeToggle />
+            <nav className="hidden items-center gap-5 text-sm text-[var(--muted)] sm:flex">
+              <Link href="/" className="transition hover:text-[var(--accent-bright)]">
+                Home
+              </Link>
+              <Link href="/#projects" className="transition hover:text-[var(--accent-bright)]">
+                Work
+              </Link>
+            </nav>
+          </div>
+          <div className="flex items-center gap-2 border-l border-[color:var(--border)] pl-3 sm:pl-5">
             {linkedinUrl ? (
               <a
                 href={linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg p-2 text-zinc-500 transition hover:bg-orange-500/10 hover:text-orange-500"
+                className="rounded-lg p-2 text-[var(--muted)] transition hover:bg-[color:var(--icon-btn-hover-bg)] hover:text-[var(--accent-bright)]"
                 aria-label="LinkedIn"
               >
                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -55,7 +59,7 @@ export function SiteTopBar({
                 href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg p-2 text-zinc-500 transition hover:bg-orange-500/10 hover:text-orange-500"
+                className="rounded-lg p-2 text-[var(--muted)] transition hover:bg-[color:var(--icon-btn-hover-bg)] hover:text-[var(--accent-bright)]"
                 aria-label="GitHub"
               >
                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -95,12 +99,12 @@ function MobileSectionStrip({
   if (showBlog) links.push({ href: "/#blog", label: "Blog" });
   links.push({ href: "/#about", label: "About" }, { href: "/#contact", label: "Contact" });
   return (
-    <div className="flex gap-2 overflow-x-auto border-t border-zinc-900 px-4 py-2.5 lg:hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <div className="flex gap-2 overflow-x-auto border-t border-[color:var(--site-section-border)] px-4 py-2.5 lg:hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       {links.map((l) => (
         <Link
           key={l.href}
           href={l.href}
-          className="shrink-0 rounded-full border border-zinc-800 bg-zinc-950 px-3 py-1 text-xs font-medium text-zinc-500 transition-colors hover:border-orange-500/35 hover:text-orange-500"
+          className="shrink-0 rounded-full border border-[color:var(--mobile-pill-border)] bg-[color:var(--mobile-pill-bg)] px-3 py-1 text-xs font-medium text-[var(--muted)] transition-colors hover:border-[color:var(--accent)] hover:text-[var(--accent-bright)]"
         >
           {l.label}
         </Link>

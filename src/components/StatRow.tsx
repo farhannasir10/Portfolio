@@ -1,6 +1,6 @@
 export function StatRow({ projectCount }: { projectCount: number }) {
   const stats = [
-    { value: "5+", label: "Years focus" },
+    { value: "3+", label: "Years focus" },
     {
       value: `${Math.max(projectCount, 0)}+`,
       label: "Projects showcased",
@@ -17,7 +17,7 @@ export function StatRow({ projectCount }: { projectCount: number }) {
           <p className="stat-value font-sans text-3xl tracking-tight sm:text-4xl">
             {s.value}
           </p>
-          <p className="mt-2 text-sm text-zinc-400">{s.label}</p>
+          <p className="mt-2 text-sm text-[var(--muted)]">{s.label}</p>
         </div>
       ))}
     </div>

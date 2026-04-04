@@ -90,6 +90,43 @@ export default async function AdminSitePage({ searchParams }: Props) {
             className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
           />
         </div>
+        <div className="rounded-lg border border-zinc-800 bg-zinc-950/40 p-4">
+          <h2 className="text-sm font-semibold text-zinc-200">About section (home)</h2>
+          <p className="mt-1 text-xs text-zinc-500">
+            Centered title, tagline, stats row, and two-column layout with skill groups.
+          </p>
+          <div className="mt-4">
+            <label className="block text-sm text-zinc-400">Accent word</label>
+            <input
+              name="aboutAccentWord"
+              defaultValue={s.aboutAccentWord}
+              placeholder="Me"
+              className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
+            />
+            <p className="mt-1 text-xs text-zinc-600">Shown after “About” in the large title.</p>
+          </div>
+          <div className="mt-4">
+            <label className="block text-sm text-zinc-400">Tagline</label>
+            <textarea
+              name="aboutTagline"
+              rows={2}
+              defaultValue={s.aboutTagline}
+              className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
+            />
+            <p className="mt-1 text-xs text-zinc-600">
+              First word gets a colored highlight (like a pill).
+            </p>
+          </div>
+          <div className="mt-4">
+            <label className="block text-sm text-zinc-400">Role line</label>
+            <input
+              name="aboutRole"
+              defaultValue={s.aboutRole}
+              className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
+            />
+            <p className="mt-1 text-xs text-zinc-600">Subheading above the Markdown body.</p>
+          </div>
+        </div>
         <div>
           <label className="block text-sm text-zinc-400">About (Markdown)</label>
           <AdminMarkdownTextarea

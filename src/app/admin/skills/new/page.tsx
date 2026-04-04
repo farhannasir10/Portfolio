@@ -1,5 +1,6 @@
 import { createSkill } from "@/actions/skills";
 import { AdminFormSubmitButton } from "@/components/admin/AdminFormSubmitButton";
+import { SKILL_CATEGORY_PRESETS } from "@/lib/skill-category-options";
 import Link from "next/link";
 
 export default function NewSkillPage() {
@@ -22,6 +23,24 @@ export default function NewSkillPage() {
             placeholder="TypeScript"
             className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
           />
+        </div>
+        <div>
+          <label className="block text-sm text-zinc-400">About card group (optional)</label>
+          <input
+            name="category"
+            list="skill-category-presets"
+            placeholder="e.g. Frontend"
+            className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
+          />
+          <datalist id="skill-category-presets">
+            {SKILL_CATEGORY_PRESETS.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
+          <p className="mt-1 text-xs text-zinc-600">
+            Skills with the same group appear together on the About section. Leave empty for one
+            combined card.
+          </p>
         </div>
         <div>
           <label className="block text-sm text-zinc-400">Sort order</label>

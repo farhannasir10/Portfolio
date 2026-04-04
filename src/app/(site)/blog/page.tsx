@@ -15,7 +15,7 @@ export default async function BlogIndexPage() {
     <div className="mx-auto max-w-3xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
       <Link
         href="/"
-        className="kicker-sky inline-block opacity-90 transition hover:text-orange-400"
+        className="kicker-sky inline-block opacity-90 transition hover:text-[var(--link-hover-subtle)]"
       >
         ← Home
       </Link>
@@ -29,11 +29,11 @@ export default async function BlogIndexPage() {
               href={`/blog/${post.slug}`}
               className="surface-card surface-card-hover group block p-6 sm:p-7"
             >
-              <span className="text-lg font-semibold tracking-tight text-zinc-100 transition group-hover:text-orange-500">
+              <span className="text-lg font-semibold tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
                 {post.title}
               </span>
               {post.excerpt ? (
-                <p className="mt-2 text-sm leading-relaxed text-zinc-500">
+                <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">
                   {post.excerpt}
                 </p>
               ) : null}

@@ -14,15 +14,23 @@ enum MediaType {
 }
 
 model SiteSettings {
-  id            String   @id @default("default")
-  profileImage  String?
-  heroTitle     String   @default("Freelance software engineer")
-  heroSubtitle  String   @default("I design and ship web products end to end.")
-  aboutMarkdown String   @default("Edit this in **Admin → Site**.")
-  email         String?
-  linkedinUrl   String?
-  githubUrl     String?
-  updatedAt     DateTime @updatedAt
+  id               String   @id @default("default")
+  profileImage     String?
+  heroTitle        String   @default("Freelance software engineer")
+  heroSubtitle     String   @default("I design and ship web products end to end.")
+  aboutMarkdown    String   @default("Edit this in **Admin → Site**.")
+  /** Last word of the centered “About …” title (e.g. Me). */
+  aboutAccentWord  String   @default("Me")
+  /** One line under the title; first word gets a highlight pill. */
+  aboutTagline     String   @default("Crafting digital experiences with passion and precision.")
+  /** Subheading above the Markdown body (e.g. Full stack developer). */
+  aboutRole        String   @default("Full stack developer")
+  /** Value shown in the stats row for years (e.g. 3+). */
+  aboutYearsStat   String   @default("3+")
+  email            String?
+  linkedinUrl      String?
+  githubUrl        String?
+  updatedAt        DateTime @updatedAt
 }
 
 model Project {
@@ -88,6 +96,8 @@ model PortfolioService {
 model PortfolioSkill {
   id        String   @id @default(cuid())
   name      String
+  /** Optional group for the About section cards (e.g. Frontend, Backend). */
+  category  String?
   sortOrder Int      @default(0)
   published Boolean  @default(true)
   createdAt DateTime @default(now())

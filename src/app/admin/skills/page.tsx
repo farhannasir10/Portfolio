@@ -33,8 +33,9 @@ export default async function AdminSkillsPage({ searchParams }: Props) {
         <div>
           <h1 className="text-2xl font-semibold text-zinc-50">Skills</h1>
           <p className="mt-1 text-sm text-zinc-400">
-            Short labels (e.g. TypeScript, Next.js) shown as pills on the home page.
-            With none published, the skills block is hidden.
+            Short labels (e.g. TypeScript) on the home page skills grid. Optional{" "}
+            <strong className="font-medium text-zinc-300">About card group</strong> merges
+            skills into category cards on the About section.
           </p>
         </div>
         {delegate ? (
@@ -68,6 +69,9 @@ export default async function AdminSkillsPage({ searchParams }: Props) {
               <span className="ml-2 text-xs text-zinc-500">
                 {s.published ? "published" : "draft"}
               </span>
+              {s.category ? (
+                <span className="ml-2 text-xs text-zinc-500">· {s.category}</span>
+              ) : null}
             </div>
             <Link
               href={`/admin/skills/${s.id}`}
