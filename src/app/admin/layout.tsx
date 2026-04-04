@@ -12,11 +12,11 @@ export default async function AdminLayout({
 
   return (
     <AdminProviders>
-      <div className="min-h-screen bg-zinc-950 text-zinc-100">
+      <div className="min-h-screen bg-black text-zinc-100">
         {session ? (
           <div className="flex min-h-screen">
-            <aside className="hidden w-52 shrink-0 border-r border-zinc-800 bg-zinc-950 p-4 md:block">
-              <p className="text-xs font-semibold uppercase tracking-wider text-zinc-500">
+            <aside className="hidden w-52 shrink-0 border-r border-zinc-900 bg-black/90 p-4 backdrop-blur-xl md:block">
+              <p className="text-xs font-semibold uppercase tracking-wider text-orange-500/90">
                 Portfolio
               </p>
               <nav className="mt-6 flex flex-col gap-1 text-sm">
@@ -31,10 +31,10 @@ export default async function AdminLayout({
                 </AdminNavLink>
                 <AdminNavLink href="/admin/cv">CV</AdminNavLink>
               </nav>
-              <div className="mt-8 border-t border-zinc-800 pt-4">
+              <div className="mt-8 border-t border-zinc-900 pt-4">
                 <Link
                   href="/"
-                  className="text-xs text-zinc-500 hover:text-cyan-400"
+                  className="text-xs text-zinc-500 hover:text-orange-400"
                 >
                   ← View site
                 </Link>
@@ -48,42 +48,42 @@ export default async function AdminLayout({
                 </form>
               </div>
             </aside>
-            <div className="min-h-screen flex-1 overflow-auto">
-              <div className="flex flex-wrap gap-2 border-b border-zinc-800 p-3 text-xs md:hidden">
-                <Link href="/admin" className="rounded bg-zinc-900 px-2 py-1">
+            <div className="min-h-screen flex-1 overflow-auto bg-black">
+              <div className="flex flex-wrap gap-2 border-b border-zinc-900 p-3 text-xs md:hidden">
+                <Link href="/admin" className="rounded bg-zinc-900/80 px-2 py-1">
                   Home
                 </Link>
-                <Link href="/admin/site" className="rounded bg-zinc-900 px-2 py-1">
+                <Link href="/admin/site" className="rounded bg-zinc-900/80 px-2 py-1">
                   Profile
                 </Link>
                 <Link
                   href="/admin/projects"
-                  className="rounded bg-zinc-900 px-2 py-1"
+                  className="rounded bg-zinc-900/80 px-2 py-1"
                 >
                   Projects
                 </Link>
-                <Link href="/admin/services" className="rounded bg-zinc-900 px-2 py-1">
+                <Link href="/admin/services" className="rounded bg-zinc-900/80 px-2 py-1">
                   Services
                 </Link>
-                <Link href="/admin/skills" className="rounded bg-zinc-900 px-2 py-1">
+                <Link href="/admin/skills" className="rounded bg-zinc-900/80 px-2 py-1">
                   Skills
                 </Link>
-                <Link href="/admin/blogs" className="rounded bg-zinc-900 px-2 py-1">
+                <Link href="/admin/blogs" className="rounded bg-zinc-900/80 px-2 py-1">
                   Blog
                 </Link>
                 <Link
                   href="/admin/blogs/new"
-                  className="rounded bg-zinc-900 px-2 py-1"
+                  className="rounded bg-zinc-900/80 px-2 py-1"
                 >
                   Post
                 </Link>
-                <Link href="/admin/cv" className="rounded bg-zinc-900 px-2 py-1">
+                <Link href="/admin/cv" className="rounded bg-zinc-900/80 px-2 py-1">
                   CV
                 </Link>
                 <form action={adminSignOut} className="inline">
                   <button
                     type="submit"
-                    className="rounded bg-zinc-900 px-2 py-1 text-zinc-400"
+                    className="rounded bg-zinc-900/80 px-2 py-1 text-zinc-400"
                   >
                     Out
                   </button>
@@ -112,7 +112,7 @@ function AdminNavLink({
   return (
     <Link
       href={href}
-      className={`rounded-md px-2 py-1.5 text-zinc-300 hover:bg-zinc-900 hover:text-cyan-400 ${className ?? ""}`}
+      className={`rounded-md px-2 py-1.5 text-zinc-300 hover:bg-zinc-900/80 hover:text-orange-400 ${className ?? ""}`}
     >
       {children}
     </Link>

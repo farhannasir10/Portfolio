@@ -52,7 +52,7 @@ function DashboardCard({
     <li>
       <Link
         href={href}
-        className="block rounded-xl border border-zinc-800 bg-zinc-900/40 p-5 transition hover:border-zinc-600"
+        className="block rounded-xl border border-zinc-800 bg-zinc-950/50 p-5 transition hover:border-orange-500/25"
       >
         <span className="font-medium text-zinc-100">{title}</span>
         <p className="mt-2 text-sm text-zinc-500">{desc}</p>

@@ -57,7 +57,9 @@ export function ProjectCard({ project }: { project: Project }) {
         ) : (
           <p className="mt-3 text-sm italic text-zinc-600">No description yet.</p>
         )}
-        {project.stack ? <StackPills stack={project.stack} className="mt-4" /> : null}
+        {project.stack ? (
+          <StackPills stack={project.stack} className="mt-4" cardHighlight />
+        ) : null}
         <div className="mt-6 flex flex-1 flex-col justify-end">
           <Link href={`/work/${project.slug}`} className="btn-project-cta w-full text-center sm:w-auto sm:self-start">
             View project details

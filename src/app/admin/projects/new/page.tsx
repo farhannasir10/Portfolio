@@ -1,20 +1,21 @@
 import { createProject } from "@/actions/projects";
+import { AdminMarkdownTextarea } from "@/components/admin/AdminMarkdownTextarea";
 import { AdminFormSubmitButton } from "@/components/admin/AdminFormSubmitButton";
 import Link from "next/link";
 
 export default function NewProjectPage() {
   return (
     <div>
-      <Link href="/admin/projects" className="text-sm text-cyan-400 hover:underline">
+      <Link href="/admin/projects" className="text-sm text-orange-400 hover:underline">
         ← Projects
       </Link>
       <h1 className="mt-4 text-2xl font-semibold text-zinc-50">New project</h1>
-      <p className="mt-3 max-w-xl rounded-lg border border-cyan-900/40 bg-cyan-950/20 px-4 py-3 text-sm text-cyan-200/90">
-        After you click <strong className="text-cyan-100">Create</strong>, you
+      <p className="mt-3 max-w-xl rounded-lg border border-orange-900/40 bg-orange-950/20 px-4 py-3 text-sm text-orange-200/90">
+        After you click <strong className="text-orange-100">Create</strong>, you
         will go to the project editor where you can add{" "}
-        <strong className="text-cyan-100">screen recordings</strong>,{" "}
-        <strong className="text-cyan-100">screenshots</strong>, and{" "}
-        <strong className="text-cyan-100">Loom / Drive / demo links</strong>.
+        <strong className="text-orange-100">screen recordings</strong>,{" "}
+        <strong className="text-orange-100">screenshots</strong>, and{" "}
+        <strong className="text-orange-100">Loom / Drive / demo links</strong>.
       </p>
 
       <form action={createProject} className="mt-8 max-w-xl space-y-6">
@@ -36,7 +37,7 @@ export default function NewProjectPage() {
         </div>
         <div>
           <label className="block text-sm text-zinc-400">Body (Markdown)</label>
-          <textarea
+          <AdminMarkdownTextarea
             name="content"
             rows={8}
             className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 font-mono text-sm"
@@ -65,7 +66,7 @@ export default function NewProjectPage() {
         </label>
         <AdminFormSubmitButton
           pendingLabel="Creating…"
-          className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-cyan-400"
+          className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-400"
         >
           Create and add media
         </AdminFormSubmitButton>
@@ -73,7 +74,7 @@ export default function NewProjectPage() {
 
       <p className="mt-10 text-sm text-zinc-500">
         Blog posts are separate:{" "}
-        <Link href="/admin/blogs/new" className="text-cyan-400 hover:underline">
+        <Link href="/admin/blogs/new" className="text-orange-400 hover:underline">
           Add a blog post
         </Link>
         .

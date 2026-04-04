@@ -160,14 +160,14 @@ export default async function HomePage() {
       >
         <SectionHeading kicker="Background" title="About" />
         <div className="max-w-3xl">
-          <MarkdownBody content={settings.aboutMarkdown} />
+          <MarkdownBody content={settings.aboutMarkdown} brighterBody />
         </div>
         {cv ? (
           <p className="mt-10">
             <a
               href={publicFileUrl(cv.storageKey) ?? "#"}
               download={cv.originalName}
-              className="btn-secondary inline-flex"
+              className="btn-secondary btn-cv-download inline-flex"
             >
               Download CV
             </a>

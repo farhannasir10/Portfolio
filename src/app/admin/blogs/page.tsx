@@ -24,7 +24,7 @@ export default async function AdminBlogsPage({ searchParams }: Props) {
         </div>
         <Link
           href="/admin/blogs/new"
-          className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-cyan-400"
+          className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-400"
         >
           New post
         </Link>
@@ -46,7 +46,7 @@ export default async function AdminBlogsPage({ searchParams }: Props) {
             </div>
             <Link
               href={`/admin/blogs/${p.id}`}
-              className="text-sm text-cyan-400 hover:underline"
+              className="text-sm text-orange-400 hover:underline"
             >
               Edit
             </Link>

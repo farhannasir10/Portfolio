@@ -34,7 +34,7 @@ export default async function AdminCvPage({ searchParams }: Props) {
             Active file:{" "}
             <a
               href={publicFileUrl(active.storageKey) ?? "#"}
-              className="text-cyan-400 underline"
+              className="text-orange-400 underline"
               target="_blank"
               rel="noreferrer"
             >
@@ -55,7 +55,7 @@ export default async function AdminCvPage({ searchParams }: Props) {
         />
         <AdminFormSubmitButton
           pendingLabel="Saving…"
-          className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-cyan-400"
+          className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-400"
         >
           Set as active CV
         </AdminFormSubmitButton>

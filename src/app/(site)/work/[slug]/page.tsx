@@ -30,7 +30,9 @@ export default async function WorkDetailPage({ params }: Props) {
       <h1 className="mt-8 text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl sm:leading-tight">
         {project.title}
       </h1>
-      {project.stack ? <StackPills stack={project.stack} /> : null}
+      {project.stack ? (
+        <StackPills stack={project.stack} cardHighlight className="mt-5" />
+      ) : null}
       {project.summary ? (
         <p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
           {project.summary}
@@ -42,7 +44,7 @@ export default async function WorkDetailPage({ params }: Props) {
           <h2 className="mb-6 text-xs font-bold tracking-widest text-zinc-500 uppercase">
             Details
           </h2>
-          <MarkdownBody content={project.content} />
+          <MarkdownBody content={project.content} highlightTechTerms />
         </div>
       ) : null}
     </article>

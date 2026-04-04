@@ -21,7 +21,7 @@ export default async function EditSkillPage({ params, searchParams }: Props) {
 
   return (
     <div>
-      <Link href="/admin/skills" className="text-sm text-cyan-400 hover:underline">
+      <Link href="/admin/skills" className="text-sm text-orange-400 hover:underline">
         ← Skills
       </Link>
       <h1 className="mt-4 text-2xl font-semibold text-zinc-50">Edit skill</h1>
@@ -58,7 +58,7 @@ export default async function EditSkillPage({ params, searchParams }: Props) {
         </label>
         <AdminFormSubmitButton
           pendingLabel="Saving…"
-          className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-cyan-400"
+          className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-400"
         >
           Save changes
         </AdminFormSubmitButton>

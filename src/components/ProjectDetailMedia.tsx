@@ -1,3 +1,4 @@
+import { MediaHorizontalScroller } from "@/components/MediaHorizontalScroller";
 import { MediaType } from "@prisma/client";
 import { fileSrcFromKey } from "@/lib/project-media";
 
@@ -14,9 +15,6 @@ type MediaRow = {
   url: string;
   caption: string | null;
 };
-
-const horizontalTrackClass =
-  "-mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 [scrollbar-width:thin] sm:-mx-6 sm:px-6 [&::-webkit-scrollbar]:h-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-orange-500/40";
 
 const slideClass =
   "w-[min(85vw,520px)] shrink-0 snap-center snap-always";
@@ -82,7 +80,7 @@ export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
           <h2 className="mb-4 text-sm font-bold tracking-widest text-zinc-500 uppercase">
             Screenshots
           </h2>
-          <div className={horizontalTrackClass}>
+          <MediaHorizontalScroller>
             {images.map((m) => (
               <figure key={m.id} className={slideClass}>
                 <div className={mediaFrameClass}>
@@ -100,7 +98,7 @@ export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
                 ) : null}
               </figure>
             ))}
-          </div>
+          </MediaHorizontalScroller>
         </section>
       ) : null}
 
@@ -109,7 +107,7 @@ export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
           <h2 className="mb-4 text-sm font-bold tracking-widest text-zinc-500 uppercase">
             Videos
           </h2>
-          <div className={horizontalTrackClass}>
+          <MediaHorizontalScroller>
             {videoUploads.map((m) => (
               <figure key={m.id} className={slideClass}>
                 <div className={mediaFrameClass}>
@@ -128,7 +126,7 @@ export function ProjectDetailMedia({ media }: { media: MediaRow[] }) {
                 ) : null}
               </figure>
             ))}
-          </div>
+          </MediaHorizontalScroller>
         </section>
       ) : null}
 

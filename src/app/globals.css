@@ -122,6 +122,12 @@ body {
   background: rgba(255, 255, 255, 0.04);
 }
 
+/* Project detail markdown — auto-highlighted tech / product names */
+.prose .tech-term-inline {
+  font-weight: 600;
+  color: var(--accent-bright);
+}
+
 .gradient-border-card {
   position: relative;
   background: var(--card);
@@ -252,6 +258,17 @@ body {
 
 .btn-secondary:hover {
   border-color: rgba(255, 107, 0, 0.45);
+  color: var(--accent-bright);
+}
+
+/* About section — Download CV (only usage of btn-secondary on site) */
+.btn-cv-download {
+  border: 1px solid rgba(253, 186, 116, 0.65);
+  color: var(--text);
+}
+
+.btn-cv-download:hover {
+  border-color: rgba(254, 215, 170, 0.85);
   color: var(--accent-bright);
 }
 

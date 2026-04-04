@@ -1,4 +1,5 @@
 import { AdminFileField } from "@/components/AdminFileField";
+import { AdminMarkdownTextarea } from "@/components/admin/AdminMarkdownTextarea";
 import { AdminNotice } from "@/components/admin/AdminNotice";
 import { getOrCreateSiteSettings } from "@/lib/data";
 import { publicFileUrl } from "@/lib/public-file-url";
@@ -32,8 +33,8 @@ export default async function AdminSitePage({ searchParams }: Props) {
         action="/api/admin/site-settings"
         className="mt-8 space-y-6"
       >
-        <div className="rounded-xl border-2 border-cyan-900/50 bg-cyan-950/20 p-5 ring-1 ring-cyan-500/20">
-          <h2 className="text-base font-semibold text-cyan-200">
+        <div className="rounded-xl border-2 border-orange-900/50 bg-orange-950/20 p-5 ring-1 ring-orange-500/20">
+          <h2 className="text-base font-semibold text-orange-200">
             Profile picture
           </h2>
           <p className="mt-1 text-xs text-zinc-400">
@@ -46,7 +47,7 @@ export default async function AdminSitePage({ searchParams }: Props) {
             <img
               src={profileSrc}
               alt=""
-              className="mt-4 h-28 w-28 rounded-full object-cover ring-2 ring-cyan-500/20"
+              className="mt-4 h-28 w-28 rounded-full object-cover ring-2 ring-orange-500/20"
             />
           ) : (
             <p className="mt-4 text-xs text-zinc-600">No photo set.</p>
@@ -91,7 +92,7 @@ export default async function AdminSitePage({ searchParams }: Props) {
         </div>
         <div>
           <label className="block text-sm text-zinc-400">About (Markdown)</label>
-          <textarea
+          <AdminMarkdownTextarea
             name="aboutMarkdown"
             rows={12}
             defaultValue={s.aboutMarkdown}
@@ -125,7 +126,7 @@ export default async function AdminSitePage({ searchParams }: Props) {
         </div>
         <button
           type="submit"
-          className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-cyan-400"
+          className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-400"
         >
           Save
         </button>

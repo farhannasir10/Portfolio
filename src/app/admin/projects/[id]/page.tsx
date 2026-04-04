@@ -5,6 +5,7 @@ import {
   updateProjectMediaSort,
 } from "@/actions/projects";
 import { AdminFileField } from "@/components/AdminFileField";
+import { AdminMarkdownTextarea } from "@/components/admin/AdminMarkdownTextarea";
 import { AdminFormSubmitButton } from "@/components/admin/AdminFormSubmitButton";
 import { AdminNotice } from "@/components/admin/AdminNotice";
 import { prisma } from "@/lib/prisma";
@@ -43,7 +44,7 @@ export default async function EditProjectPage({ params, searchParams }: Props) {
 
   return (
     <div>
-      <Link href="/admin/projects" className="text-sm text-cyan-400 hover:underline">
+      <Link href="/admin/projects" className="text-sm text-orange-400 hover:underline">
         ← Projects
       </Link>
       <h1 className="mt-4 text-2xl font-semibold text-zinc-50">Edit project</h1>
@@ -65,27 +66,27 @@ export default async function EditProjectPage({ params, searchParams }: Props) {
       ) : null}
 
       <section id="media" className="mt-8 scroll-mt-8">
-        <h2 className="text-lg font-semibold text-cyan-100">Project media</h2>
+        <h2 className="text-lg font-semibold text-orange-100">Project media</h2>
         <p className="mt-1 text-sm text-zinc-500">
           Screen recordings, screenshots, and Loom / Drive / demo links appear on
           your public portfolio.
         </p>
 
-        <div className="mt-4 rounded-lg border border-cyan-900/45 bg-cyan-950/25 px-4 py-3 text-sm leading-relaxed text-cyan-100/90">
+        <div className="mt-4 rounded-lg border border-orange-900/45 bg-orange-950/25 px-4 py-3 text-sm leading-relaxed text-orange-100/90">
           <p>
-            <strong className="text-cyan-50">Sort order</strong> controls display
+            <strong className="text-orange-50">Sort order</strong> controls display
             order everywhere. Lower numbers appear first.
           </p>
-          <ul className="mt-2 list-inside list-disc space-y-1 text-cyan-100/80">
+          <ul className="mt-2 list-inside list-disc space-y-1 text-orange-100/80">
             <li>
-              <strong className="text-cyan-50">Home page card image</strong> uses
-              the screenshot (<code className="text-cyan-200">IMAGE</code>) with
+              <strong className="text-orange-50">Home page card image</strong> uses
+              the screenshot (<code className="text-orange-200">IMAGE</code>) with
               the <strong>lowest</strong> sort order. Put your cover at{" "}
-              <code className="text-cyan-200">0</code> (or lower than other
+              <code className="text-orange-200">0</code> (or lower than other
               images).
             </li>
             <li>
-              On the <strong className="text-cyan-50">project detail</strong>{" "}
+              On the <strong className="text-orange-50">project detail</strong>{" "}
               page, screenshots show in a horizontal scroller in sort order;
               videos and links are listed below them.
             </li>
@@ -282,7 +283,7 @@ export default async function EditProjectPage({ params, searchParams }: Props) {
         </div>
         <div>
           <label className="block text-sm text-zinc-400">Body (Markdown)</label>
-          <textarea
+          <AdminMarkdownTextarea
             name="content"
             rows={8}
             defaultValue={project.content ?? ""}
@@ -317,7 +318,7 @@ export default async function EditProjectPage({ params, searchParams }: Props) {
         </label>
         <AdminFormSubmitButton
           pendingLabel="Saving…"
-          className="rounded-lg bg-cyan-500 px-4 py-2 text-sm font-medium text-zinc-950 hover:bg-cyan-400"
+          className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-medium text-white hover:bg-orange-400"
         >
           Save project
         </AdminFormSubmitButton>
