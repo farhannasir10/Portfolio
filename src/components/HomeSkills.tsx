@@ -12,7 +12,7 @@ export function HomeSkills({
           key={s.id}
           className="gradient-border-card home-skill-tile relative overflow-hidden p-5 sm:p-6"
         >
-          <p className="text-base font-semibold leading-snug tracking-tight text-slate-50 sm:text-lg">
+          <p className="text-base font-bold leading-snug tracking-tight text-zinc-100 sm:text-lg">
             {s.name}
           </p>
         </div>

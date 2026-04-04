@@ -6,6 +6,8 @@ import {
   MAX_VIDEO_BYTES,
   makeStorageKey,
   assertSafeStorageKey,
+  saveUploadFromFile,
+  fileUrlFromKey,
 } from "@/lib/files";
 import { NextResponse } from "next/server";
 
@@ -39,33 +41,44 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "File too large" }, { status: 413 });
   }
 
-  // In production (Vercel), store the upload in Vercel Blob.
-  // We keep returning `storageKey` so your DB schema can stay unchanged.
   try {
     assertSafeStorageKey(storageKey);
     const token = blobToken();
-    if (!token) {
+
+    if (token) {
+      const blob = await put(storageKey, file, {
+        access: "public",
+        multipart: true,
+        cacheControlMaxAge: 31536000,
+        allowOverwrite: false,
+        token,
+      });
+      return NextResponse.json({
+        storageKey: blob.url,
+        url: blob.url,
+      });
+    }
+
+    // No Blob token: Vercel/serverless needs one (no persistent disk).
+    if (process.env.VERCEL) {
       return NextResponse.json(
-        { error: "Missing Blob token. Set BLOB_READ_WRITE_TOKEN in Vercel." },
+        {
+          error:
+            "Missing BLOB_READ_WRITE_TOKEN. In the Vercel dashboard: Storage → Blob → connect a store, then add the read/write token to project env vars.",
+        },
         { status: 500 },
       );
     }
-    const blob = await put(storageKey, file, {
-      access: "public",
-      multipart: true,
-      // Match previous "immutable" behavior as much as possible.
-      cacheControlMaxAge: 31536000,
-      allowOverwrite: false,
-      token,
-    });
+
+    // Local / self-hosted: save under ./uploads (served via /api/files/…).
+    await saveUploadFromFile(file, storageKey, max);
     return NextResponse.json({
-      storageKey: blob.url,
-      url: blob.url,
+      storageKey,
+      url: fileUrlFromKey(storageKey),
     });
   } catch (e) {
     console.error(e);
     const msg = e instanceof Error ? e.message : "Upload failed";
     return NextResponse.json({ error: msg }, { status: 500 });
   }
-
 }

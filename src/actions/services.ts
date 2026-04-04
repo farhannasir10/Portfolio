@@ -21,7 +21,6 @@ export async function createService(formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   if (!title) throw new Error("Title required");
   const description = String(formData.get("description") ?? "").trim();
-  if (!description) throw new Error("Description required");
 
   const iconKey = parseIconKey(String(formData.get("iconKey") ?? ""));
   const sortOrder = Number(formData.get("sortOrder") ?? 0) || 0;
@@ -43,7 +42,6 @@ export async function updateService(serviceId: string, formData: FormData) {
   const title = String(formData.get("title") ?? "").trim();
   if (!title) throw new Error("Title required");
   const description = String(formData.get("description") ?? "").trim();
-  if (!description) throw new Error("Description required");
 
   const iconKey = parseIconKey(String(formData.get("iconKey") ?? ""));
   const sortOrder = Number(formData.get("sortOrder") ?? 0) || 0;

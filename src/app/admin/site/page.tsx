@@ -73,6 +73,12 @@ export default async function AdminSitePage({ searchParams }: Props) {
             defaultValue={s.heroTitle}
             className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
           />
+          <p className="mt-1 text-xs text-zinc-500">
+            Full name here: the <strong className="text-zinc-300">last word</strong>{" "}
+            shows in orange inside <code className="text-zinc-400">{"{ }"}</code> on
+            the home hero (e.g. <code className="text-zinc-400">Farhan Nasir</code>
+            → Nasir highlighted).
+          </p>
         </div>
         <div>
           <label className="block text-sm text-zinc-400">Hero subtitle</label>

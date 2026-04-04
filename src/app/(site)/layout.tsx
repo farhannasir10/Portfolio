@@ -26,8 +26,13 @@ export default async function SiteLayout({
     settings.heroTitle?.trim() || "Portfolio";
 
   return (
-    <div className="bg-portfolio-mesh relative min-h-full text-slate-200">
-      <div className="flex min-h-screen">
+    <div className="site-cosmos relative min-h-full overflow-x-hidden text-zinc-300">
+      <div
+        className="bg-portfolio-mesh pointer-events-none fixed inset-0 -z-20"
+        aria-hidden
+      />
+      <div className="site-aurora pointer-events-none fixed inset-0 -z-10" aria-hidden />
+      <div className="relative z-[1] flex min-h-screen">
         <SiteSidebar
           showBlog={showBlog}
           showServices={showServices}
@@ -43,10 +48,10 @@ export default async function SiteLayout({
             showSkills={showSkills}
           />
           <div className="flex-1">{children}</div>
-          <footer className="border-t border-sky-500/10 px-4 py-10 sm:px-6 lg:px-8">
+          <footer className="footer-glow border-t border-zinc-900 px-4 py-14 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-5xl text-center">
-              <p className="kicker-sky opacity-80">Portfolio</p>
-              <p className="mt-2 text-xs text-slate-600">
+              <p className="kicker-sky opacity-90">Portfolio</p>
+              <p className="mt-3 text-xs text-zinc-500">
                 © {new Date().getFullYear()} · Built with Next.js
               </p>
             </div>

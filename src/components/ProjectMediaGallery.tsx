@@ -29,11 +29,11 @@ export function ProjectMediaGallery({
       {media.map((m) => (
         <li
           key={m.id}
-          className="overflow-hidden rounded-xl border border-sky-500/10 bg-slate-950/50 shadow-inner shadow-black/30"
+          className="overflow-hidden rounded-xl border border-violet-500/12 bg-zinc-950/50 shadow-inner shadow-black/30"
         >
           <MediaItem {...m} />
           {m.caption ? (
-            <p className="border-t border-sky-500/10 bg-sky-500/[0.03] px-4 py-3 text-sm leading-relaxed text-slate-400">
+            <p className="border-t border-violet-500/10 bg-violet-500/[0.04] px-4 py-3 text-sm leading-relaxed text-zinc-400">
               {m.caption}
             </p>
           ) : null}
@@ -68,7 +68,7 @@ function MediaItem(m: {
           href={m.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="break-all text-sm text-sky-300 underline decoration-sky-500/40 underline-offset-4 transition hover:text-sky-200"
+          className="break-all text-sm text-teal-400 underline decoration-violet-500/35 underline-offset-4 transition hover:text-teal-300"
         >
           {m.url}
         </a>

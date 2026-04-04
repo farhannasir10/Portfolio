@@ -24,15 +24,15 @@ export default async function BlogPostPage({ params }: Props) {
     <article className="mx-auto max-w-3xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
       <Link
         href="/blog"
-        className="kicker-sky inline-block opacity-90 transition hover:text-sky-200"
+        className="kicker-sky inline-block opacity-90 transition hover:text-orange-400"
       >
         ← Blog
       </Link>
-      <h1 className="mt-8 text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl sm:leading-tight">
+      <h1 className="mt-8 text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl sm:leading-tight">
         {post.title}
       </h1>
       {post.publishedAt ? (
-        <p className="mt-3 text-sm text-slate-600">
+        <p className="mt-3 font-mono text-sm text-zinc-600">
           {post.publishedAt.toLocaleDateString(undefined, {
             dateStyle: "long",
           })}
@@ -43,7 +43,7 @@ export default async function BlogPostPage({ params }: Props) {
         <img
           src={cover}
           alt=""
-          className="mt-10 w-full rounded-xl border border-sky-500/15 object-cover shadow-lg shadow-black/40"
+          className="mt-10 w-full rounded-xl border border-zinc-800 object-cover shadow-[0_24px_48px_-20px_rgba(249,115,22,0.12)]"
         />
       ) : null}
       <div className="mt-12">

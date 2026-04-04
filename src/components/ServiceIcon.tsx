@@ -5,7 +5,7 @@ export { SERVICE_ICON_OPTIONS } from "@/lib/service-icons";
 
 export function ServiceIcon({
   iconKey,
-  className = "h-6 w-6 text-sky-400",
+  className = "h-6 w-6 text-orange-500",
 }: {
   iconKey: string;
   className?: string;

@@ -28,37 +28,38 @@ export function ProjectCard({ project }: { project: Project }) {
   const teaser = getProjectCardTeaserText(project.summary, project.content);
 
   return (
-    <article className="surface-card surface-card-hover flex h-full flex-col overflow-hidden">
-      <div className="relative aspect-[16/10] bg-slate-950">
+    <article className="project-card-wrap surface-card surface-card-hover flex h-full flex-col overflow-hidden">
+      <div className="relative aspect-[16/10] overflow-hidden bg-zinc-950">
+        <div className="project-card-shine" aria-hidden />
         {coverKey ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={fileSrcFromKey(coverKey)}
             alt=""
-            className="h-full w-full object-cover"
+            className="project-card-media h-full w-full object-cover"
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center border-b border-sky-500/10 bg-slate-900/80">
-            <span className="text-xs font-medium tracking-wide text-slate-600">
-              No cover image
+          <div className="flex h-full w-full items-center justify-center border-b border-white/[0.06] bg-gradient-to-br from-zinc-900 to-zinc-950">
+            <span className="text-xs font-medium tracking-widest text-zinc-600 uppercase">
+              No cover
             </span>
           </div>
         )}
       </div>
       <div className="flex flex-1 flex-col p-5 sm:p-6">
-        <h3 className="text-lg font-semibold tracking-tight text-slate-50 sm:text-xl">
+        <h3 className="text-lg font-bold tracking-tight text-zinc-100 sm:text-xl">
           {project.title}
         </h3>
-        {project.stack ? <StackPills stack={project.stack} className="mt-3" /> : null}
         {teaser ? (
-          <p className="mt-4 line-clamp-3 text-sm leading-relaxed text-slate-400">
+          <p className="mt-3 line-clamp-3 text-sm leading-relaxed text-zinc-500">
             {teaser}
           </p>
         ) : (
-          <p className="mt-4 text-sm italic text-slate-600">No description yet.</p>
+          <p className="mt-3 text-sm italic text-zinc-600">No description yet.</p>
         )}
+        {project.stack ? <StackPills stack={project.stack} className="mt-4" /> : null}
         <div className="mt-6 flex flex-1 flex-col justify-end">
-          <Link href={`/work/${project.slug}`} className="btn-secondary w-full text-center sm:w-auto sm:self-start">
+          <Link href={`/work/${project.slug}`} className="btn-project-cta w-full text-center sm:w-auto sm:self-start">
             View project details
           </Link>
         </div>

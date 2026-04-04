@@ -4,6 +4,7 @@ import { HeroTitle } from "@/components/HeroTitle";
 import { MarkdownBody } from "@/components/MarkdownBody";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionHeading } from "@/components/SectionHeading";
+import { ServiceDescription } from "@/components/ServiceDescription";
 import { ServiceIcon } from "@/components/ServiceIcon";
 import { StatRow } from "@/components/StatRow";
 import {
@@ -32,31 +33,40 @@ export default async function HomePage() {
   ]);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 pb-24 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-4 pb-28 sm:px-6 lg:px-8">
       <section
         id="home"
-        className="flex scroll-mt-36 flex-col justify-center gap-10 py-16 md:min-h-[calc(100vh-8rem)] md:flex-row md:items-center md:gap-12 md:py-20"
+        className="relative scroll-mt-36 py-16 md:min-h-[calc(100vh-8rem)] md:flex md:flex-col md:justify-center md:py-24"
       >
-        <HeroProfileAvatar storageKey={settings.profileImage} />
-        <div className="flex min-w-0 flex-1 flex-col gap-6">
-          <p className="kicker-sky">Freelance · Software engineer</p>
-          <HeroTitle title={settings.heroTitle} />
-          <p className="max-w-xl text-base leading-relaxed text-slate-400 sm:text-lg">
-            {settings.heroSubtitle}
-          </p>
-          <div className="flex flex-wrap gap-3">
-            <a href="#projects" className="btn-primary">
-              View work
-            </a>
-            <a href="#contact" className="btn-secondary">
-              Get in touch
-            </a>
+        <div className="relative z-10 flex flex-col gap-10 md:flex-row md:items-center md:gap-14">
+          <div className="relative z-10 flex justify-center md:justify-start">
+            <HeroProfileAvatar storageKey={settings.profileImage} />
           </div>
+          <div className="relative flex min-w-0 flex-1 flex-col gap-5">
+            <p className="kicker">Freelance · Software engineer</p>
+            <HeroTitle title={settings.heroTitle} />
+            <p className="max-w-xl text-base leading-relaxed text-zinc-400 sm:text-lg">
+              {settings.heroSubtitle}
+            </p>
+            <div className="flex flex-wrap gap-3 pt-1">
+              <a href="#projects" className="btn-hero-navy">
+                View work
+              </a>
+              <a href="#contact" className="btn-hero-outline">
+                Get in touch
+              </a>
+            </div>
+          </div>
+        </div>
+        <div className="relative z-10 mt-14 md:mt-16">
           <StatRow projectCount={projects.length} />
         </div>
       </section>
 
-      <section id="projects" className="scroll-mt-36 border-t border-sky-500/10 py-16 md:py-20">
+      <section
+        id="projects"
+        className="site-section-slice scroll-mt-36 border-t border-zinc-900 py-20 md:py-24"
+      >
         <SectionHeading kicker="Portfolio" title="Projects" />
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {projects.length === 0
@@ -68,7 +78,7 @@ export default async function HomePage() {
       {services.length > 0 ? (
         <section
           id="services"
-          className="scroll-mt-36 border-t border-sky-500/10 py-16 md:py-20"
+          className="site-section-slice scroll-mt-36 border-t border-zinc-900 py-20 md:py-24"
         >
           <SectionHeading kicker="What I do" title="Services" />
           <div className="grid gap-4 md:grid-cols-3">
@@ -77,13 +87,14 @@ export default async function HomePage() {
                 key={s.id}
                 className="surface-card surface-card-hover relative p-5 sm:p-6"
               >
-                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-sky-500/10 ring-1 ring-sky-500/20">
-                  <ServiceIcon iconKey={s.iconKey} />
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl border border-orange-500/20 bg-orange-500/5">
+                  <ServiceIcon
+                    iconKey={s.iconKey}
+                    className="h-6 w-6 text-orange-500"
+                  />
                 </div>
-                <h3 className="text-base font-semibold text-slate-100">{s.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-slate-500">
-                  {s.description}
-                </p>
+                <h3 className="text-base font-semibold text-zinc-100">{s.title}</h3>
+                <ServiceDescription text={s.description} />
               </div>
             ))}
           </div>
@@ -91,9 +102,12 @@ export default async function HomePage() {
       ) : null}
 
       {skills.length > 0 ? (
-        <section id="skills" className="scroll-mt-36 border-t border-sky-500/10 py-16 md:py-20">
+        <section
+          id="skills"
+          className="site-section-slice scroll-mt-36 border-t border-zinc-900 py-20 md:py-24"
+        >
           <SectionHeading kicker="Stack" title="Skills" />
-          <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-slate-500">
+          <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-zinc-500">
             Tools and technologies I work with.
           </p>
           <HomeSkills skills={skills} />
@@ -103,10 +117,10 @@ export default async function HomePage() {
       {showBlog ? (
         <section
           id="blog"
-          className="scroll-mt-36 border-t border-sky-500/10 py-16 md:py-20"
+          className="site-section-slice scroll-mt-36 border-t border-zinc-900 py-20 md:py-24"
         >
           <SectionHeading kicker="Writing" title="Blog" />
-          <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-slate-500">
+          <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-zinc-500">
             Notes, tutorials, and build logs.
           </p>
           <ul className="flex flex-col gap-3">
@@ -116,16 +130,16 @@ export default async function HomePage() {
                   href={`/blog/${post.slug}`}
                   className="surface-card surface-card-hover group block p-5 sm:p-6"
                 >
-                  <span className="text-lg font-semibold tracking-tight text-slate-100 transition group-hover:text-sky-200">
+                  <span className="text-lg font-semibold tracking-tight text-zinc-100 transition group-hover:text-orange-500">
                     {post.title}
                   </span>
                   {post.excerpt ? (
-                    <p className="mt-2 text-sm leading-relaxed text-slate-500">
+                    <p className="mt-2 text-sm leading-relaxed text-zinc-500">
                       {post.excerpt}
                     </p>
                   ) : null}
                   {post.publishedAt ? (
-                    <p className="mt-3 text-xs text-slate-600">
+                    <p className="mt-3 text-xs text-zinc-600">
                       {post.publishedAt.toLocaleDateString(undefined, {
                         year: "numeric",
                         month: "long",
@@ -142,7 +156,7 @@ export default async function HomePage() {
 
       <section
         id="about"
-        className="scroll-mt-36 border-t border-sky-500/10 py-16 md:py-20"
+        className="site-section-slice scroll-mt-36 border-t border-zinc-900 py-20 md:py-24"
       >
         <SectionHeading kicker="Background" title="About" />
         <div className="max-w-3xl">
@@ -163,10 +177,10 @@ export default async function HomePage() {
 
       <section
         id="contact"
-        className="scroll-mt-36 border-t border-sky-500/10 py-16 md:py-20"
+        className="contact-section site-section-slice scroll-mt-36 mt-4 border-t-0 px-6 py-16 sm:px-10 sm:py-20"
       >
         <SectionHeading kicker="Let&apos;s talk" title="Contact" />
-        <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-slate-500">
+        <p className="-mt-4 mb-8 max-w-lg text-sm leading-relaxed text-zinc-500">
           Available for freelance engagements and collaborations.
         </p>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -176,14 +190,14 @@ export default async function HomePage() {
               className="surface-card surface-card-hover flex flex-col gap-2 p-5"
             >
               <span className="kicker-sky opacity-90">Email</span>
-              <span className="break-all text-sm font-medium text-slate-200">
+              <span className="break-all text-sm font-medium text-zinc-100">
                 {settings.email}
               </span>
             </a>
           ) : (
-            <div className="surface-card flex flex-col gap-2 p-5 opacity-70">
+            <div className="surface-card flex flex-col gap-2 p-5 opacity-90">
               <span className="kicker-sky opacity-90">Email</span>
-              <span className="text-sm text-slate-500">Not configured</span>
+              <span className="text-sm text-zinc-500">Not configured</span>
             </div>
           )}
           {settings.linkedinUrl ? (
@@ -194,7 +208,7 @@ export default async function HomePage() {
               className="surface-card surface-card-hover flex flex-col gap-2 p-5"
             >
               <span className="kicker-sky opacity-90">LinkedIn</span>
-              <span className="text-sm font-medium text-slate-200">Profile</span>
+              <span className="text-sm font-medium text-zinc-100">Profile</span>
             </a>
           ) : null}
           {settings.githubUrl ? (
@@ -205,7 +219,7 @@ export default async function HomePage() {
               className="surface-card surface-card-hover flex flex-col gap-2 p-5"
             >
               <span className="kicker-sky opacity-90">GitHub</span>
-              <span className="text-sm font-medium text-slate-200">Profile</span>
+              <span className="text-sm font-medium text-zinc-100">Profile</span>
             </a>
           ) : null}
         </div>

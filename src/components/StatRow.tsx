@@ -8,16 +8,16 @@ export function StatRow({ projectCount }: { projectCount: number }) {
     { value: "100%", label: "Commitment" },
   ];
   return (
-    <div className="mt-14 grid gap-4 sm:grid-cols-3">
+    <div className="grid gap-4 sm:grid-cols-3">
       {stats.map((s) => (
         <div
           key={s.label}
-          className="gradient-border-card relative overflow-hidden p-5 sm:p-6"
+          className="surface-card stat-card-glow relative overflow-hidden p-5 sm:p-6"
         >
-          <p className="font-mono text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl">
+          <p className="stat-value font-sans text-3xl tracking-tight sm:text-4xl">
             {s.value}
           </p>
-          <p className="mt-2 text-sm text-slate-500">{s.label}</p>
+          <p className="mt-2 text-sm text-zinc-400">{s.label}</p>
         </div>
       ))}
     </div>

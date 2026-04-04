@@ -15,7 +15,7 @@ export function StackPills({
       {tags.map((t) => (
         <span
           key={t}
-          className="rounded-full border border-sky-500/20 bg-sky-500/5 px-3 py-1 text-xs font-medium tracking-wide text-sky-200/90"
+          className="rounded-full border border-zinc-700 bg-zinc-900/80 px-3 py-1 text-xs font-medium tracking-wide text-zinc-400"
         >
           {t}
         </span>

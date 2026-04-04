@@ -25,6 +25,26 @@ function blobPathname(file: File): string {
   return `${id}${ext}`;
 }
 
+/** Vercel serverless body limit is ~4.5MB; local fallback uses this route. */
+const SERVER_UPLOAD_MAX_BYTES = 4 * 1024 * 1024;
+
+async function uploadViaAdminServer(file: File, kind: Kind): Promise<string> {
+  const fd = new FormData();
+  fd.append("file", file);
+  fd.append("kind", kind);
+  const res = await fetch("/api/admin/upload", { method: "POST", body: fd });
+  const data = (await res.json().catch(() => ({}))) as {
+    error?: string;
+    storageKey?: string;
+  };
+  if (!res.ok) {
+    throw new Error(data.error ?? "Upload failed");
+  }
+  const key = data.storageKey?.trim();
+  if (!key) throw new Error("Upload failed");
+  return key;
+}
+
 export function AdminFileField({
   kind,
   fieldName = "storageKey",
@@ -64,18 +84,28 @@ export function AdminFileField({
               return;
             }
 
-            // Client → Vercel Blob directly (via token from our API). Sending the
-            // whole file through /api/admin/upload hits Vercel's ~4.5MB body limit,
-            // so videos fail there while small images still worked.
+            // Prefer client → Blob (large files, production). Without
+            // BLOB_READ_WRITE_TOKEN, fall back to POST /api/admin/upload (local disk
+            // in dev, or Blob when the token is set on the server).
             const multipart =
               kind === "video" || file.size > 4 * 1024 * 1024;
-            const blob = await upload(blobPathname(file), file, {
-              access: "public",
-              handleUploadUrl: "/api/admin/blob-client-upload",
-              clientPayload: JSON.stringify({ kind }),
-              multipart,
-            });
-            setStorageKey(blob.url);
+            try {
+              const blob = await upload(blobPathname(file), file, {
+                access: "public",
+                handleUploadUrl: "/api/admin/blob-client-upload",
+                clientPayload: JSON.stringify({ kind }),
+                multipart,
+              });
+              setStorageKey(blob.url);
+            } catch {
+              if (file.size > SERVER_UPLOAD_MAX_BYTES) {
+                throw new Error(
+                  "File is too large for this upload path. Set BLOB_READ_WRITE_TOKEN (Vercel Blob) for large files, or use a smaller image.",
+                );
+              }
+              const key = await uploadViaAdminServer(file, kind);
+              setStorageKey(key);
+            }
             setOriginalName(file.name);
           } catch (err) {
             const msg = err instanceof Error ? err.message : "Network error";

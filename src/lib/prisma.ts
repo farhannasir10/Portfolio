@@ -21,10 +21,10 @@ function makeClient() {
 }
 
 /**
- * Production: one client on global. Development: do not pin on global — otherwise
- * after `prisma generate` the old client stays in memory until you restart `next dev`.
+ * Single client for the whole Node process. Required in dev: without this, every
+ * Turbopack/HMR reload creates a new PrismaClient and new DB connections until the
+ * pool hits "MaxClientsInSessionMode" (common with Supabase session pooler).
+ *
+ * After `prisma generate`, restart `next dev` if delegates look stale.
  */
-export const prisma =
-  process.env.NODE_ENV === "production"
-    ? (globalForPrisma.prisma ??= makeClient())
-    : makeClient();
+export const prisma = globalForPrisma.prisma ??= makeClient();

@@ -48,7 +48,7 @@ export function SiteSidebar({
   };
 
   return (
-    <aside className="hidden w-56 shrink-0 flex-col border-r border-sky-500/10 bg-[#050a14]/80 py-8 pl-5 pr-3 backdrop-blur-md lg:flex">
+    <aside className="hidden w-56 shrink-0 flex-col border-r border-zinc-900 bg-black/80 py-8 pl-5 pr-3 backdrop-blur-xl lg:flex">
       <p className="kicker-sky mb-6 px-2">Navigate</p>
       <nav className="flex flex-col gap-1">
         {items.map((item) => (

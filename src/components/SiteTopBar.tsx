@@ -19,30 +19,30 @@ export function SiteTopBar({
     brandLabel.length > 28 ? `${brandLabel.slice(0, 26)}…` : brandLabel;
 
   return (
-    <header className="sticky top-0 z-40 border-b border-sky-500/10 bg-[#050a12]/75 backdrop-blur-xl backdrop-saturate-150">
+    <header className="header-flashy sticky top-0 z-40 backdrop-blur-xl">
       <div className="flex h-14 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="truncate text-sm font-semibold tracking-tight text-slate-100"
+          className="truncate text-sm font-semibold tracking-tight text-zinc-100 transition hover:text-orange-500"
         >
           {short}
         </Link>
         <div className="flex items-center gap-4 sm:gap-6">
-          <nav className="hidden items-center gap-4 text-sm text-slate-400 sm:flex">
-            <Link href="/" className="transition hover:text-sky-300">
+          <nav className="hidden items-center gap-5 text-sm text-zinc-400 sm:flex">
+            <Link href="/" className="transition hover:text-orange-500">
               Home
             </Link>
-            <Link href="/#projects" className="transition hover:text-sky-300">
+            <Link href="/#projects" className="transition hover:text-orange-500">
               Work
             </Link>
           </nav>
-          <div className="flex items-center gap-2 border-l border-sky-500/15 pl-4 sm:pl-6">
+          <div className="flex items-center gap-2 border-l border-zinc-800 pl-4 sm:pl-6">
             {linkedinUrl ? (
               <a
                 href={linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg p-2 text-slate-500 transition hover:bg-sky-500/10 hover:text-sky-300"
+                className="rounded-lg p-2 text-zinc-500 transition hover:bg-orange-500/10 hover:text-orange-500"
                 aria-label="LinkedIn"
               >
                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -55,7 +55,7 @@ export function SiteTopBar({
                 href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg p-2 text-slate-500 transition hover:bg-sky-500/10 hover:text-sky-300"
+                className="rounded-lg p-2 text-zinc-500 transition hover:bg-orange-500/10 hover:text-orange-500"
                 aria-label="GitHub"
               >
                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -70,7 +70,6 @@ export function SiteTopBar({
           </div>
         </div>
       </div>
-      {/* Mobile section nav */}
       <MobileSectionStrip
         showBlog={showBlog}
         showServices={showServices}
@@ -89,24 +88,19 @@ function MobileSectionStrip({
   showServices: boolean;
   showSkills: boolean;
 }) {
-  const links: { href: string; label: string }[] = [
-    { href: "/#home", label: "Home" },
-  ];
+  const links: { href: string; label: string }[] = [{ href: "/#home", label: "Home" }];
   links.push({ href: "/#projects", label: "Projects" });
   if (showServices) links.push({ href: "/#services", label: "Services" });
   if (showSkills) links.push({ href: "/#skills", label: "Skills" });
   if (showBlog) links.push({ href: "/#blog", label: "Blog" });
-  links.push(
-    { href: "/#about", label: "About" },
-    { href: "/#contact", label: "Contact" },
-  );
+  links.push({ href: "/#about", label: "About" }, { href: "/#contact", label: "Contact" });
   return (
-    <div className="flex gap-2 overflow-x-auto border-t border-sky-500/5 px-4 py-2.5 lg:hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <div className="flex gap-2 overflow-x-auto border-t border-zinc-900 px-4 py-2.5 lg:hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       {links.map((l) => (
         <Link
           key={l.href}
           href={l.href}
-          className="shrink-0 rounded-full border border-sky-500/15 bg-sky-500/5 px-3 py-1 text-xs font-medium text-slate-400"
+          className="shrink-0 rounded-full border border-zinc-800 bg-zinc-950 px-3 py-1 text-xs font-medium text-zinc-500 transition-colors hover:border-orange-500/35 hover:text-orange-500"
         >
           {l.label}
         </Link>

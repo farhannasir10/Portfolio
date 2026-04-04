@@ -40,12 +40,12 @@ export default async function EditServicePage({ params, searchParams }: Props) {
           />
         </div>
         <div>
-          <label className="block text-sm text-zinc-400">Description</label>
+          <label className="block text-sm text-zinc-400">Description (optional)</label>
           <textarea
             name="description"
-            required
             rows={4}
             defaultValue={service.description}
+            placeholder="Leave blank if you only want a title on the card."
             className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
           />
         </div>

@@ -20,26 +20,26 @@ export default async function WorkDetailPage({ params }: Props) {
   if (!project) notFound();
 
   return (
-    <article className="mx-auto max-w-5xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
+    <article className="mx-auto max-w-6xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
       <Link
         href="/#projects"
-        className="kicker-sky inline-block opacity-90 transition hover:text-sky-200"
+        className="kicker-sky inline-block opacity-90 transition hover:text-orange-400"
       >
         ← Projects
       </Link>
-      <h1 className="mt-8 text-3xl font-semibold tracking-tight text-slate-50 sm:text-4xl sm:leading-tight">
+      <h1 className="mt-8 text-3xl font-bold tracking-tight text-zinc-100 sm:text-4xl sm:leading-tight">
         {project.title}
       </h1>
       {project.stack ? <StackPills stack={project.stack} /> : null}
       {project.summary ? (
-        <p className="mt-6 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
+        <p className="mt-6 max-w-2xl text-base leading-relaxed text-zinc-500 sm:text-lg">
           {project.summary}
         </p>
       ) : null}
       <ProjectDetailMedia media={project.media} />
       {project.content ? (
-        <div className="mt-12 max-w-3xl border-t border-sky-500/10 pt-12">
-          <h2 className="mb-6 text-sm font-semibold tracking-wide text-slate-400">
+        <div className="mt-14 max-w-3xl border-t border-zinc-800 pt-14">
+          <h2 className="mb-6 text-xs font-bold tracking-widest text-zinc-500 uppercase">
             Details
           </h2>
           <MarkdownBody content={project.content} />
