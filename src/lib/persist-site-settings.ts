@@ -9,6 +9,7 @@ export async function persistSiteSettingsFromForm(formData: FormData) {
   const aboutTagline = String(formData.get("aboutTagline") ?? "").trim();
   const aboutRole = String(formData.get("aboutRole") ?? "").trim() || "Full stack developer";
   const email = String(formData.get("email") ?? "").trim() || null;
+  const whatsappNumber = String(formData.get("whatsappNumber") ?? "").trim() || null;
   const linkedinUrl = String(formData.get("linkedinUrl") ?? "").trim() || null;
   const githubUrl = String(formData.get("githubUrl") ?? "").trim() || null;
 
@@ -45,6 +46,7 @@ export async function persistSiteSettingsFromForm(formData: FormData) {
       aboutRole,
       aboutYearsStat,
       email,
+      whatsappNumber,
       linkedinUrl,
       githubUrl,
     },
@@ -58,6 +60,7 @@ export async function persistSiteSettingsFromForm(formData: FormData) {
       aboutRole,
       aboutYearsStat,
       email,
+      whatsappNumber,
       linkedinUrl,
       githubUrl,
     },

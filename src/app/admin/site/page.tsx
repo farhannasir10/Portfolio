@@ -154,6 +154,18 @@ export default async function AdminSitePage({ searchParams }: Props) {
           />
         </div>
         <div>
+          <label className="block text-sm text-zinc-400">WhatsApp number</label>
+          <input
+            name="whatsappNumber"
+            defaultValue={s.whatsappNumber ?? ""}
+            placeholder="e.g. 923001234567"
+            className="mt-1 w-full rounded-lg border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm"
+          />
+          <p className="mt-1 text-xs text-zinc-500">
+            Use full number with country code and no plus sign or spaces.
+          </p>
+        </div>
+        <div>
           <label className="block text-sm text-zinc-400">GitHub URL</label>
           <input
             name="githubUrl"

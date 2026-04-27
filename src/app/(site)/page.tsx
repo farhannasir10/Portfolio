@@ -30,6 +30,8 @@ export default async function HomePage() {
     getPublishedServices(),
     getPublishedSkills(),
   ]);
+  const whatsappDigits = (settings.whatsappNumber ?? "").replace(/\D/g, "");
+  const whatsappHref = whatsappDigits ? `https://wa.me/${whatsappDigits}` : null;
 
   return (
     <div className="mx-auto max-w-5xl px-4 pb-28 sm:px-6 lg:px-8">
@@ -207,6 +209,22 @@ export default async function HomePage() {
               <span className="text-sm font-medium text-[var(--text)]">Profile</span>
             </a>
           ) : null}
+          {whatsappHref ? (
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="surface-card surface-card-hover flex flex-col gap-2 p-5"
+            >
+              <span className="kicker-sky opacity-90">WhatsApp</span>
+              <span className="text-sm font-medium text-[var(--text)]">Message</span>
+            </a>
+          ) : (
+            <div className="surface-card flex flex-col gap-2 p-5 opacity-90">
+              <span className="kicker-sky opacity-90">WhatsApp</span>
+              <span className="text-sm text-[var(--muted)]">Not configured</span>
+            </div>
+          )}
         </div>
       </section>
     </div>

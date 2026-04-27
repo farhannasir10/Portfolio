@@ -28,6 +28,7 @@ model SiteSettings {
   /** Value shown in the stats row for years (e.g. 3+). */
   aboutYearsStat   String   @default("3+")
   email            String?
+  whatsappNumber   String?
   linkedinUrl      String?
   githubUrl        String?
   updatedAt        DateTime @updatedAt
