@@ -1,5 +1,7 @@
+import { BlogMeta } from "@/components/BlogMeta";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getPublishedPosts, hasPublishedPosts } from "@/lib/data";
+import { estimateReadMinutes } from "@/lib/read-time";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -15,7 +17,7 @@ export default async function BlogIndexPage() {
     <div className="mx-auto max-w-3xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
       <Link
         href="/"
-        className="kicker-sky inline-block opacity-90 transition hover:text-[var(--link-hover-subtle)]"
+        className="page-back-link"
       >
         ← Home
       </Link>
@@ -27,7 +29,7 @@ export default async function BlogIndexPage() {
           <li key={post.id}>
             <Link
               href={`/blog/${post.slug}`}
-              className="surface-card surface-card-hover group block p-6 sm:p-7"
+              className="blog-card-link surface-card surface-card-hover group block p-6 pr-14 sm:p-7 sm:pr-16"
             >
               <span className="text-lg font-semibold tracking-tight text-[var(--text)] transition group-hover:text-[var(--accent-bright)]">
                 {post.title}
@@ -37,6 +39,10 @@ export default async function BlogIndexPage() {
                   {post.excerpt}
                 </p>
               ) : null}
+              <BlogMeta
+                publishedAt={post.publishedAt}
+                readMinutes={estimateReadMinutes(post.content)}
+              />
             </Link>
           </li>
         ))}

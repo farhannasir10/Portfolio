@@ -28,24 +28,28 @@ export function HeroProfileAvatar({
   const src = publicFileUrl(storageKey);
   if (src) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img
-        src={src}
-        alt=""
-        width={200}
-        height={200}
-        className="relative z-10 h-40 w-40 shrink-0 rounded-2xl border border-[color:var(--border)] object-cover shadow-xl shadow-black/25 md:h-44 md:w-44"
-      />
+      <div className="hero-profile-frame">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={src}
+          alt=""
+          width={200}
+          height={200}
+          className="relative z-10 h-40 w-40 shrink-0 border border-[color:var(--border)] object-cover md:h-44 md:w-44"
+        />
+      </div>
     );
   }
 
   return (
-    <div
-      className="relative z-10 flex h-40 w-40 shrink-0 items-center justify-center rounded-2xl border border-dashed border-[color:var(--border)] bg-[var(--card)] md:h-44 md:w-44"
-      title="Profile photo"
-      aria-label="Profile photo placeholder"
-    >
-      <UserPlaceholder />
+    <div className="hero-profile-frame">
+      <div
+        className="relative z-10 flex h-40 w-40 shrink-0 items-center justify-center border border-dashed border-[color:var(--border)] bg-[var(--card)] md:h-44 md:w-44"
+        title="Profile photo"
+        aria-label="Profile photo placeholder"
+      >
+        <UserPlaceholder />
+      </div>
     </div>
   );
 }

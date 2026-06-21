@@ -29,6 +29,11 @@ export default function AdminDashboardPage() {
           desc="Tech pills on the home page (e.g. TypeScript)"
         />
         <DashboardCard
+          href="/admin/testimonials"
+          title="Testimonials"
+          desc="Client quotes in the Kind words section"
+        />
+        <DashboardCard
           href="/admin/blogs"
           title="Blog"
           desc="Posts (section hides when none published)"

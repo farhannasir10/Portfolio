@@ -6,6 +6,7 @@ import {
   hasPublishedPosts,
   hasPublishedServices,
   hasPublishedSkills,
+  hasPublishedTestimonials,
 } from "@/lib/data";
 import type { ReactNode } from "react";
 
@@ -16,10 +17,12 @@ export default async function SiteLayout({
 }: {
   children: ReactNode;
 }) {
-  const [showBlog, showServices, showSkills, settings] = await Promise.all([
+  const [showBlog, showServices, showSkills, showTestimonials, settings] =
+    await Promise.all([
     hasPublishedPosts(),
     hasPublishedServices(),
     hasPublishedSkills(),
+    hasPublishedTestimonials(),
     getOrCreateSiteSettings(),
   ]);
 
@@ -39,8 +42,9 @@ export default async function SiteLayout({
             showBlog={showBlog}
             showServices={showServices}
             showSkills={showSkills}
+            showTestimonials={showTestimonials}
           />
-          <div className="flex min-w-0 flex-1 flex-col bg-[var(--site-main-bg)]">
+          <div className="flex min-w-0 flex-1 flex-col border-l border-[color:var(--site-sidebar-border)] bg-[var(--site-main-bg)] site-main-panel">
           <SiteTopBar
             brandLabel={brand}
             linkedinUrl={settings.linkedinUrl}
@@ -48,12 +52,16 @@ export default async function SiteLayout({
             showBlog={showBlog}
             showServices={showServices}
             showSkills={showSkills}
+            showTestimonials={showTestimonials}
           />
           <div className="flex-1">{children}</div>
           <footer className="footer-glow border-t border-[color:var(--site-section-border)] px-4 py-14 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-5xl text-center">
+            <div className="footer-inner mx-auto max-w-5xl">
               <p className="kicker-sky opacity-90">Portfolio</p>
-              <p className="mt-3 text-xs text-[var(--muted)]">
+              <p className="footer-tagline">
+                Crafted with care — design, code, and delivery.
+              </p>
+              <p className="text-xs text-[var(--muted)]">
                 © {new Date().getFullYear()} · Built with Next.js
               </p>
             </div>

@@ -31,6 +31,20 @@ export async function getPublishedProjectBySlug(slug: string) {
   });
 }
 
+export async function getAdjacentPublishedProjects(slug: string) {
+  const all = await prisma.project.findMany({
+    where: { published: true },
+    orderBy: { sortOrder: "asc" },
+    select: { slug: true, title: true },
+  });
+  const index = all.findIndex((p) => p.slug === slug);
+  if (index === -1) return { prev: null, next: null };
+  return {
+    prev: index > 0 ? all[index - 1] : null,
+    next: index < all.length - 1 ? all[index + 1] : null,
+  };
+}
+
 export async function getPublishedPosts() {
   return prisma.blogPost.findMany({
     where: { published: true },
@@ -78,6 +92,18 @@ export async function hasPublishedSkills() {
   const sk = prismaPortfolioSkillsMaybe();
   if (!sk) return false;
   const n = await sk.count({ where: { published: true } });
+  return n > 0;
+}
+
+export async function getPublishedTestimonials() {
+  return prisma.portfolioTestimonial.findMany({
+    where: { published: true },
+    orderBy: { sortOrder: "asc" },
+  });
+}
+
+export async function hasPublishedTestimonials() {
+  const n = await prisma.portfolioTestimonial.count({ where: { published: true } });
   return n > 0;
 }
 

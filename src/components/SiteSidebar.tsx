@@ -10,10 +10,12 @@ export function SiteSidebar({
   showBlog,
   showServices,
   showSkills,
+  showTestimonials,
 }: {
   showBlog: boolean;
   showServices: boolean;
   showSkills: boolean;
+  showTestimonials: boolean;
 }) {
   const pathname = usePathname();
   const [hash, setHash] = useState("");
@@ -36,10 +38,11 @@ export function SiteSidebar({
     items.push({ href: "/#skills", label: "Skills", hash: "#skills" });
   }
   if (showBlog) items.push({ href: "/#blog", label: "Blog", hash: "#blog" });
-  items.push(
-    { href: "/#about", label: "About", hash: "#about" },
-    { href: "/#contact", label: "Contact", hash: "#contact" },
-  );
+  items.push({ href: "/#about", label: "About", hash: "#about" });
+  if (showTestimonials) {
+    items.push({ href: "/#testimonials", label: "Kind words", hash: "#testimonials" });
+  }
+  items.push({ href: "/#contact", label: "Contact", hash: "#contact" });
 
   const isActive = (item: Item) => {
     if (!onHome) return false;
@@ -48,8 +51,9 @@ export function SiteSidebar({
   };
 
   return (
-    <aside className="hidden w-56 shrink-0 flex-col border-r border-[color:var(--site-sidebar-border)] bg-[var(--site-sidebar-bg)] py-8 pl-5 pr-3 lg:flex">
-      <p className="kicker-sky mb-6 px-2">Navigate</p>
+    <aside className="sidebar-shell hidden w-60 shrink-0 flex-col border-r border-[color:var(--site-sidebar-border)] bg-[var(--site-sidebar-bg)] py-9 pl-6 pr-4 lg:flex">
+      <p className="kicker-sky mb-3 px-2">Navigate</p>
+      <div className="sidebar-brand-rule" aria-hidden />
       <nav className="flex flex-col gap-1">
         {items.map((item) => (
           <a

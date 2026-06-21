@@ -60,7 +60,7 @@ export function AboutSection({
             <h3 className="text-lg font-semibold tracking-tight text-[var(--text)] sm:text-xl">
               {role}
             </h3>
-            <div className="mt-8 flex flex-col gap-6 rounded-2xl border border-[color:var(--border)] bg-[var(--card)] px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-8">
+            <div className="about-stats-bar mt-8 flex flex-col gap-6 px-5 py-6 sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:px-8">
               <div className="flex-1 text-center">
                 <p className="text-2xl font-bold tracking-tight text-[color:var(--accent-bright)] sm:text-3xl">
                   10+
@@ -115,7 +115,7 @@ export function AboutSection({
           {groups.length > 0 ? (
             <div className="grid min-w-0 grid-cols-1 gap-4 sm:grid-cols-2">
               {groups.map((g) => (
-                <div key={g.title} className="surface-card p-5 sm:p-6">
+                <div key={g.title} className="expertise-card surface-card p-5 sm:p-6">
                   <div className="mb-4 flex items-center gap-3">
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[color:var(--accent-muted)]">
                       <AboutCategoryIcon categoryTitle={g.title} />

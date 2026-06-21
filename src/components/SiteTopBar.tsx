@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { MobileSectionStrip } from "@/components/MobileSectionStrip";
 import { SiteThemeToggle } from "@/components/SiteThemeToggle";
 
 export function SiteTopBar({
@@ -8,6 +9,7 @@ export function SiteTopBar({
   showBlog,
   showServices,
   showSkills,
+  showTestimonials,
 }: {
   brandLabel: string;
   linkedinUrl: string | null;
@@ -15,27 +17,29 @@ export function SiteTopBar({
   showBlog: boolean;
   showServices: boolean;
   showSkills: boolean;
+  showTestimonials: boolean;
 }) {
   const short =
     brandLabel.length > 28 ? `${brandLabel.slice(0, 26)}…` : brandLabel;
 
   return (
-    <header className="header-flashy sticky top-0 z-40 backdrop-blur-xl">
-      <div className="flex h-14 items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+    <header className="header-flashy sticky top-0 z-40">
+      <div className="flex h-[3.25rem] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="truncate text-sm font-semibold tracking-tight text-[var(--muted)] transition hover:text-[var(--accent-bright)]"
+          className="brand-mark truncate text-sm font-semibold tracking-tight text-[var(--text)] transition hover:text-[var(--accent-bright)]"
         >
+          <span className="brand-mark-dot" aria-hidden />
           {short}
         </Link>
         <div className="flex items-center gap-3 sm:gap-5">
           <div className="flex items-center gap-3">
             <SiteThemeToggle />
-            <nav className="hidden items-center gap-5 text-sm text-[var(--muted)] sm:flex">
-              <Link href="/" className="transition hover:text-[var(--accent-bright)]">
+            <nav className="hidden items-center gap-6 text-sm text-[var(--muted)] sm:flex">
+              <Link href="/" className="header-nav-link">
                 Home
               </Link>
-              <Link href="/#projects" className="transition hover:text-[var(--accent-bright)]">
+              <Link href="/#projects" className="header-nav-link">
                 Work
               </Link>
             </nav>
@@ -46,7 +50,7 @@ export function SiteTopBar({
                 href={linkedinUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg p-2 text-[var(--muted)] transition hover:bg-[color:var(--icon-btn-hover-bg)] hover:text-[var(--accent-bright)]"
+                className="icon-btn"
                 aria-label="LinkedIn"
               >
                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -59,7 +63,7 @@ export function SiteTopBar({
                 href={githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-lg p-2 text-[var(--muted)] transition hover:bg-[color:var(--icon-btn-hover-bg)] hover:text-[var(--accent-bright)]"
+                className="icon-btn"
                 aria-label="GitHub"
               >
                 <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
@@ -78,37 +82,8 @@ export function SiteTopBar({
         showBlog={showBlog}
         showServices={showServices}
         showSkills={showSkills}
+        showTestimonials={showTestimonials}
       />
     </header>
-  );
-}
-
-function MobileSectionStrip({
-  showBlog,
-  showServices,
-  showSkills,
-}: {
-  showBlog: boolean;
-  showServices: boolean;
-  showSkills: boolean;
-}) {
-  const links: { href: string; label: string }[] = [{ href: "/#home", label: "Home" }];
-  links.push({ href: "/#projects", label: "Projects" });
-  if (showServices) links.push({ href: "/#services", label: "Services" });
-  if (showSkills) links.push({ href: "/#skills", label: "Skills" });
-  if (showBlog) links.push({ href: "/#blog", label: "Blog" });
-  links.push({ href: "/#about", label: "About" }, { href: "/#contact", label: "Contact" });
-  return (
-    <div className="flex gap-2 overflow-x-auto border-t border-[color:var(--site-section-border)] px-4 py-2.5 lg:hidden [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-      {links.map((l) => (
-        <Link
-          key={l.href}
-          href={l.href}
-          className="shrink-0 rounded-full border border-[color:var(--mobile-pill-border)] bg-[color:var(--mobile-pill-bg)] px-3 py-1 text-xs font-medium text-[var(--muted)] transition-colors hover:border-[color:var(--accent)] hover:text-[var(--accent-bright)]"
-        >
-          {l.label}
-        </Link>
-      ))}
-    </div>
   );
 }

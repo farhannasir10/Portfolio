@@ -1,5 +1,7 @@
+import { BlogMeta } from "@/components/BlogMeta";
 import { MarkdownBody } from "@/components/MarkdownBody";
 import { getPublishedPostBySlug } from "@/lib/data";
+import { estimateReadMinutes } from "@/lib/read-time";
 import { publicFileUrl } from "@/lib/public-file-url";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -24,29 +26,28 @@ export default async function BlogPostPage({ params }: Props) {
     <article className="mx-auto max-w-3xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
       <Link
         href="/blog"
-        className="kicker-sky inline-block opacity-90 transition hover:text-[var(--link-hover-subtle)]"
+        className="page-back-link"
       >
         ← Blog
       </Link>
-      <h1 className="mt-8 text-3xl font-bold tracking-tight text-[var(--text)] sm:text-4xl sm:leading-tight">
+      <h1 className="detail-hero-title mt-8 text-3xl text-[var(--text)] sm:text-4xl sm:leading-tight">
         {post.title}
       </h1>
-      {post.publishedAt ? (
-        <p className="mt-3 font-mono text-sm text-[var(--dim)]">
-          {post.publishedAt.toLocaleDateString(undefined, {
-            dateStyle: "long",
-          })}
-        </p>
-      ) : null}
+      <BlogMeta
+        publishedAt={post.publishedAt}
+        readMinutes={estimateReadMinutes(post.content)}
+      />
       {cover ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={cover}
           alt=""
-          className="mt-10 w-full rounded-xl border border-[color:var(--border)] object-cover shadow-[0_24px_48px_-20px_rgba(0,0,0,0.18)]"
+          loading="lazy"
+          decoding="async"
+          className="blog-post-cover mt-10 w-full object-cover"
         />
       ) : null}
-      <div className="mt-12">
+      <div className="detail-content-panel mt-12">
         <MarkdownBody content={post.content} />
       </div>
     </article>

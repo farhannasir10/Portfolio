@@ -25,6 +25,7 @@ export default async function AdminLayout({
                 <AdminNavLink href="/admin/projects">Projects</AdminNavLink>
                 <AdminNavLink href="/admin/services">Services</AdminNavLink>
                 <AdminNavLink href="/admin/skills">Skills</AdminNavLink>
+                <AdminNavLink href="/admin/testimonials">Testimonials</AdminNavLink>
                 <AdminNavLink href="/admin/blogs">Blog</AdminNavLink>
                 <AdminNavLink href="/admin/blogs/new" className="pl-3 text-xs text-zinc-500">
                   + New blog post
@@ -67,6 +68,9 @@ export default async function AdminLayout({
                 </Link>
                 <Link href="/admin/skills" className="rounded bg-zinc-900/80 px-2 py-1">
                   Skills
+                </Link>
+                <Link href="/admin/testimonials" className="rounded bg-zinc-900/80 px-2 py-1">
+                  Quotes
                 </Link>
                 <Link href="/admin/blogs" className="rounded bg-zinc-900/80 px-2 py-1">
                   Blog

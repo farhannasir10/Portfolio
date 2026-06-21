@@ -17,7 +17,7 @@ export function StatRow({ projectCount }: { projectCount: number }) {
           <p className="stat-value font-sans text-3xl tracking-tight sm:text-4xl">
             {s.value}
           </p>
-          <p className="mt-2 text-sm text-[var(--muted)]">{s.label}</p>
+          <p className="stat-label mt-2">{s.label}</p>
         </div>
       ))}
     </div>

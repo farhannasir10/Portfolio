@@ -29,13 +29,15 @@ export function ProjectCard({ project }: { project: Project }) {
 
   return (
     <article className="project-card-wrap surface-card surface-card-hover flex h-full flex-col overflow-hidden">
-      <div className="relative aspect-[16/10] overflow-hidden bg-[var(--project-placeholder-to)]">
+      <div className="project-card-media-wrap relative aspect-[16/10] overflow-hidden bg-[var(--project-placeholder-to)]">
         <div className="project-card-shine" aria-hidden />
         {coverKey ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             src={fileSrcFromKey(coverKey)}
             alt=""
+            loading="lazy"
+            decoding="async"
             className="project-card-media h-full w-full object-cover"
           />
         ) : (
@@ -46,7 +48,7 @@ export function ProjectCard({ project }: { project: Project }) {
           </div>
         )}
       </div>
-      <div className="flex flex-1 flex-col p-5 sm:p-6">
+      <div className="project-card-body flex flex-1 flex-col p-5 sm:p-6">
         <h3 className="text-lg font-bold tracking-tight text-[var(--text)] sm:text-xl">
           {project.title}
         </h3>
