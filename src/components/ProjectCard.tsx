@@ -4,7 +4,7 @@ import {
   getProjectCoverImageKey,
 } from "@/lib/project-media";
 import type { MediaType } from "@prisma/client";
-import Link from "next/link";
+import { ProjectDetailLink } from "@/components/ProjectDetailLink";
 import { StackPills } from "@/components/StackPills";
 
 type Project = {
@@ -63,9 +63,7 @@ export function ProjectCard({ project }: { project: Project }) {
           <StackPills stack={project.stack} className="mt-4" cardHighlight />
         ) : null}
         <div className="mt-6 flex flex-1 flex-col justify-end">
-          <Link href={`/work/${project.slug}`} className="btn-project-cta w-full text-center sm:w-auto sm:self-start">
-            View project details
-          </Link>
+          <ProjectDetailLink href={`/work/${project.slug}`} />
         </div>
       </div>
     </article>
