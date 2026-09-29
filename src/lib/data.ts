@@ -88,11 +88,9 @@ export async function getPublishedSkills() {
   });
 }
 
-export async function hasPublishedSkills() {
-  const sk = prismaPortfolioSkillsMaybe();
-  if (!sk) return false;
-  const n = await sk.count({ where: { published: true } });
-  return n > 0;
+export function hasPublishedSkills() {
+  // Curated tech stack is always shown on the home page
+  return true;
 }
 
 export async function getPublishedTestimonials() {

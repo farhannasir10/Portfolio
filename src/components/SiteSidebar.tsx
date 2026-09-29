@@ -30,12 +30,13 @@ export function SiteSidebar({
   const onHome = pathname === "/";
 
   const items: Item[] = [{ href: "/#home", label: "Overview", hash: "#home" }];
+  if (showSkills) {
+    items.push({ href: "/#skills", label: "Tech stack", hash: "#skills" });
+  }
+  items.push({ href: "/#experience", label: "Experience", hash: "#experience" });
   items.push({ href: "/#projects", label: "Projects", hash: "#projects" });
   if (showServices) {
     items.push({ href: "/#services", label: "Services", hash: "#services" });
-  }
-  if (showSkills) {
-    items.push({ href: "/#skills", label: "Skills", hash: "#skills" });
   }
   if (showBlog) items.push({ href: "/#blog", label: "Blog", hash: "#blog" });
   items.push({ href: "/#about", label: "About", hash: "#about" });

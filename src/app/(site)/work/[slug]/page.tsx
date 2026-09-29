@@ -1,9 +1,9 @@
 import { MarkdownBody } from "@/components/MarkdownBody";
+import { PageBackLink } from "@/components/PageBackLink";
 import { ProjectDetailMedia } from "@/components/ProjectDetailMedia";
 import { ProjectPager } from "@/components/ProjectPager";
 import { StackPills } from "@/components/StackPills";
 import { getAdjacentPublishedProjects, getPublishedProjectBySlug } from "@/lib/data";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -23,12 +23,7 @@ export default async function WorkDetailPage({ params }: Props) {
 
   return (
     <article className="mx-auto max-w-6xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-10">
-      <Link
-        href="/#projects"
-        className="page-back-link"
-      >
-        ← Projects
-      </Link>
+      <PageBackLink href="/#projects">← Projects</PageBackLink>
       <h1 className="detail-hero-title mt-8 text-3xl text-[var(--text)] sm:text-4xl sm:leading-tight">
         {project.title}
       </h1>

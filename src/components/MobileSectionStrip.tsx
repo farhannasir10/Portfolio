@@ -31,9 +31,10 @@ export function MobileSectionStrip({
   const activeHash = hash || "#home";
 
   const links: LinkItem[] = [{ href: "/#home", label: "Home", hash: "#home" }];
+  if (showSkills) links.push({ href: "/#skills", label: "Tech stack", hash: "#skills" });
+  links.push({ href: "/#experience", label: "Experience", hash: "#experience" });
   links.push({ href: "/#projects", label: "Projects", hash: "#projects" });
   if (showServices) links.push({ href: "/#services", label: "Services", hash: "#services" });
-  if (showSkills) links.push({ href: "/#skills", label: "Skills", hash: "#skills" });
   if (showBlog) links.push({ href: "/#blog", label: "Blog", hash: "#blog" });
   links.push({ href: "/#about", label: "About", hash: "#about" });
   if (showTestimonials) {

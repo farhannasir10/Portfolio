@@ -1,4 +1,5 @@
 import { BlogMeta } from "@/components/BlogMeta";
+import { PageBackLink } from "@/components/PageBackLink";
 import { SectionHeading } from "@/components/SectionHeading";
 import { getPublishedPosts, hasPublishedPosts } from "@/lib/data";
 import { estimateReadMinutes } from "@/lib/read-time";
@@ -15,12 +16,7 @@ export default async function BlogIndexPage() {
 
   return (
     <div className="mx-auto max-w-3xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <Link
-        href="/"
-        className="page-back-link"
-      >
-        ← Home
-      </Link>
+      <PageBackLink href="/">← Home</PageBackLink>
       <div className="mt-8">
         <SectionHeading kicker="Writing" title="Blog" />
       </div>

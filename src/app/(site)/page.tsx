@@ -1,6 +1,7 @@
 import { AboutSection } from "@/components/AboutSection";
+import { ExperienceSection } from "@/components/ExperienceSection";
+import { HeroAvailabilityBadges } from "@/components/HeroAvailabilityBadges";
 import { HeroProfileAvatar } from "@/components/HeroProfileAvatar";
-import { HomeSkills } from "@/components/HomeSkills";
 import { HeroTitle } from "@/components/HeroTitle";
 import { ProjectCard } from "@/components/ProjectCard";
 import { SectionEmptyState } from "@/components/SectionEmptyState";
@@ -8,6 +9,7 @@ import { SectionHeading } from "@/components/SectionHeading";
 import { ServiceDescription } from "@/components/ServiceDescription";
 import { ServiceIcon } from "@/components/ServiceIcon";
 import { StatRow } from "@/components/StatRow";
+import { TechStackSection } from "@/components/TechStackSection";
 import { TestimonialsSection } from "@/components/TestimonialsSection";
 import {
   getActiveCv,
@@ -52,10 +54,7 @@ export default async function HomePage() {
             <HeroProfileAvatar storageKey={settings.profileImage} />
           </div>
           <div className="relative flex min-w-0 flex-1 flex-col gap-5">
-            <span className="hero-status-badge">
-              <span className="hero-status-dot" aria-hidden />
-              Open to opportunities
-            </span>
+            <HeroAvailabilityBadges />
             <p className="kicker">Freelance · Software engineer</p>
             <HeroTitle title={settings.heroTitle} />
             <p className="max-w-xl text-base leading-relaxed text-[var(--muted)] sm:text-lg">
@@ -75,6 +74,10 @@ export default async function HomePage() {
           <StatRow projectCount={projects.length} />
         </div>
       </section>
+
+      <TechStackSection />
+
+      <ExperienceSection />
 
       <section
         id="projects"
@@ -116,19 +119,6 @@ export default async function HomePage() {
               </div>
             ))}
           </div>
-        </section>
-      ) : null}
-
-      {skills.length > 0 ? (
-        <section
-          id="skills"
-          className="site-section-slice scroll-mt-36 border-t border-[color:var(--site-section-border)] py-20 md:py-24"
-        >
-          <SectionHeading kicker="Stack" title="Skills" />
-          <p className="section-lead">
-            Tools and technologies I work with.
-          </p>
-          <HomeSkills skills={skills} />
         </section>
       ) : null}
 

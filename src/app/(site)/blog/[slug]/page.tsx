@@ -1,9 +1,9 @@
 import { BlogMeta } from "@/components/BlogMeta";
 import { MarkdownBody } from "@/components/MarkdownBody";
+import { PageBackLink } from "@/components/PageBackLink";
 import { getPublishedPostBySlug } from "@/lib/data";
 import { estimateReadMinutes } from "@/lib/read-time";
 import { publicFileUrl } from "@/lib/public-file-url";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -24,12 +24,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <article className="mx-auto max-w-3xl scroll-mt-36 px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-      <Link
-        href="/blog"
-        className="page-back-link"
-      >
-        ← Blog
-      </Link>
+      <PageBackLink href="/blog">← Blog</PageBackLink>
       <h1 className="detail-hero-title mt-8 text-3xl text-[var(--text)] sm:text-4xl sm:leading-tight">
         {post.title}
       </h1>
